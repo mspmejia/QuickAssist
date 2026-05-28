@@ -1,0 +1,18 @@
+.inv-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.inv-stat {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px;
+  text-align: center;
+  gap: 4px;
+}
+.inv-stat-value { font-family: var(--font-display); font-size: 32px; font-weight: 800; }
+.inv-stat-label { font-size: 11px; color: var(--white-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.inv-qty { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+.inv-qty.critical { color: #FF4444; }
+.inv-qty.low { color: #FFB400; }
