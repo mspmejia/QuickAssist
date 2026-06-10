@@ -37,3 +37,30 @@
   transition: var(--transition);
 }
 .cert-tag:hover { background: rgba(204,0,0,0.2); }
+
+/* ── Responsivo móvil ────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Grid: forzar 1 columna en pantallas pequeñas */
+  .personnel-grid { grid-template-columns: 1fr; }
+
+  /* Card: padding lateral más generoso */
+  .person-card { padding: 16px; }
+
+  /* Acciones: wrap para que no se corten */
+  .person-actions { flex-wrap: wrap; }
+  .person-actions .btn { flex: 1; justify-content: center; min-width: 100px; }
+
+  /* Certs: reducir tamaño */
+  .person-certs .badge { font-size: 10px; padding: 2px 6px; }
+
+  /* form-grid-2 → 1 col en modal */
+  .form-grid-2 { grid-template-columns: 1fr; }
+
+  /* Filtros: scroll horizontal */
+  .personnel-page .events-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .personnel-page .filter-btn { flex-shrink: 0; }
+}
