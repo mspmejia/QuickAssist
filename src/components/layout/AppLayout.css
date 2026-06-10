@@ -55,6 +55,15 @@
   color: var(--white);
 }
 
+.app-mobile-section {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
 /* ── Mobile breakpoint ────────────────────────────────── */
 @media (max-width: 768px) {
   .app-mobile-header {
