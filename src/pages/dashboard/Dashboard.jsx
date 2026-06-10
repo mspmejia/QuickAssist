@@ -81,10 +81,10 @@ export default function Dashboard() {
         <div className="card">
           <div className="card-header-row">
             <span className="card-label">Agenda Próxima</span>
-            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/events')}>Ver todo</button>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/events')}>Ver todo ({upcomingEvents.length})</button>
           </div>
           <div className="agenda-list">
-            {upcomingEvents.slice(0, 4).map(ev => (
+            {upcomingEvents.slice(0, 7).map(ev => (
               <div key={ev.id} className="agenda-item">
                 <div className="agenda-date">
                   <span className="agenda-day">{format(new Date(ev.date), 'd')}</span>
