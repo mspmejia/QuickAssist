@@ -4,13 +4,14 @@ import { useAuth, ROLE_LABELS, ROLE_COLORS } from '../../context/AuthContext';
 import './Sidebar.css';
 
 const NAV_ITEMS = [
-  { to: '/dashboard', icon: '▦', label: 'Dashboard', roles: ['admin', 'accounting', 'paramedic', 'pilot', 'inventory'] },
-  { to: '/events', icon: '◈', label: 'Eventos', roles: ['admin', 'paramedic', 'pilot'] },
-  { to: '/patients', icon: '✚', label: 'Fichas de Atención', roles: ['admin', 'paramedic'] },
-  { to: '/personnel', icon: '◉', label: 'Personal', roles: ['admin', 'accounting'] },
-  { to: '/inventory', icon: '▣', label: 'Inventario', roles: ['admin', 'inventory', 'paramedic'] },
-  { to: '/accounting', icon: '◎', label: 'Contabilidad', roles: ['admin', 'accounting'] },
-  { to: '/reports', icon: '◐', label: 'Reportería', roles: ['admin', 'accounting'] },
+  { to: '/dashboard',    icon: '▦', label: 'Dashboard',        roles: ['admin', 'accounting', 'paramedic', 'pilot', 'inventory', 'medic'] },
+  { to: '/events',       icon: '◈', label: 'Eventos',          roles: ['admin', 'paramedic', 'pilot', 'medic'] },
+  { to: '/patients',     icon: '✚', label: 'Fichas de Atención', roles: ['admin', 'paramedic', 'medic'] },
+  { to: '/personnel',    icon: '◉', label: 'Personal',         roles: ['admin', 'accounting'] },
+  { to: '/inventory',    icon: '▣', label: 'Inventario',       roles: ['admin', 'inventory', 'paramedic'] },
+  { to: '/accounting',   icon: '◎', label: 'Contabilidad',     roles: ['admin', 'accounting'] },
+  { to: '/reports',      icon: '◐', label: 'Reportería',       roles: ['admin', 'accounting'] },
+  { to: '/availability', icon: '◷', label: 'Disponibilidad',   roles: ['admin', 'paramedic', 'pilot', 'medic'] },
 ];
 
 const MOBILE_BREAKPOINT = 768;
@@ -22,20 +23,14 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_BREAKPOINT);
 
-  // Detectar cambio de tamaño de ventana
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Cerrar sidebar al navegar en mobile
   useEffect(() => {
-    if (isMobile && onMobileClose) {
-      onMobileClose();
-    }
+    if (isMobile && onMobileClose) onMobileClose();
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -53,11 +48,9 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
 
   return (
     <>
-      {/* Overlay oscuro al abrir en mobile */}
       {isMobile && mobileOpen && (
         <div className="sidebar-overlay" onClick={onMobileClose} />
       )}
-
       <aside className={sidebarClass}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
@@ -69,11 +62,8 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
               </div>
             )}
           </div>
-          {/* En mobile: botón cerrar; en desktop: botón colapsar */}
           {isMobile ? (
-            <button className="sidebar-toggle btn-ghost" onClick={onMobileClose}>
-              ✕
-            </button>
+            <button className="sidebar-toggle btn-ghost" onClick={onMobileClose}>✕</button>
           ) : (
             <button className="sidebar-toggle btn-ghost" onClick={() => setCollapsed(!collapsed)}>
               {collapsed ? '▶' : '◀'}
@@ -106,9 +96,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
               </div>
             </div>
           )}
-          <button className="sidebar-logout btn-ghost" onClick={handleLogout} title="Cerrar sesión">
-            ⏻
-          </button>
+          <button className="sidebar-logout btn-ghost" onClick={handleLogout} title="Cerrar sesión">⏻</button>
         </div>
       </aside>
     </>
