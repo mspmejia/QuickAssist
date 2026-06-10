@@ -12,6 +12,8 @@ import Inventory from './pages/inventory/Inventory';
 import Accounting from './pages/accounting/Accounting';
 import Reports from './pages/reports/Reports';
 import Availability from './pages/availability/Availability';
+import Companies from './pages/companies/Companies';
+import Units from './pages/units/Units';
 import './index.css';
 
 export default function App() {
@@ -31,6 +33,8 @@ export default function App() {
               <Route path="/accounting"   element={<Accounting />} />
               <Route path="/reports"      element={<Reports />} />
               <Route path="/availability" element={<Availability />} />
+              <Route path="/companies"   element={<Companies />} />
+              <Route path="/units"       element={<Units />} />
             </Route>
           </Routes>
         </AppProvider>
