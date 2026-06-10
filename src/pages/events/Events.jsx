@@ -3,19 +3,148 @@ import { useApp } from '../../context/AppContext';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useAuth } from '../../context/AuthContext';
+import { ALL_STAFF, ROLE_LABELS, ROLE_COLORS } from '../../context/AuthContext';
 import './Events.css';
 
 const STATUS_LABELS = { confirmed: 'Confirmado', pending: 'Pendiente', completed: 'Completado', cancelled: 'Cancelado' };
-const STATUS_BADGE = { confirmed: 'badge-green', pending: 'badge-yellow', completed: 'badge-gray', cancelled: 'badge-red' };
-const TYPE_LABELS = { concert: '🎵 Concierto', sports: '⚽ Deportes', forum: '🎙 Foro', festival: '🎪 Festival' };
+const STATUS_BADGE  = { confirmed: 'badge-green', pending: 'badge-yellow', completed: 'badge-gray', cancelled: 'badge-red' };
+const TYPE_LABELS   = { concert: '🎵 Concierto', sports: '⚽ Deportes', forum: '🎙 Foro', festival: '🎪 Festival' };
 
 const EMPTY_FORM = {
   name: '', client: '', venue: '', date: '', setupDate: '', teardownDate: '',
   expectedAttendance: '', type: 'concert', status: 'pending', ambulances: 1, notes: '',
 };
 
+// ── Helper: convierte Date a dateKey "YYYY-MM-DD" ─────────
+function toDateKey(date) {
+  if (!date) return null;
+  const d = new Date(date);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ── Helper: verifica si un usuario tiene disponibilidad en una fecha ─────────
+function isAvailableOn(availData, userId, dateKey) {
+  return !!availData[dateKey]?.[userId];
+}
+
+// ── Panel de sugerencias de personal ─────────────────────
+function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAssign }) {
+  const eventKey   = toDateKey(event.date);
+  const setupKey   = toDateKey(event.setupDate);
+  const teardownKey = toDateKey(event.teardownDate);
+
+  const STAFF_ROLES = ['paramedic', 'pilot', 'medic'];
+  const staffList = ALL_STAFF.filter(s => STAFF_ROLES.includes(s.role));
+
+  // Para cada persona del staff, calcular qué fechas del evento coinciden con su disponibilidad
+  const suggestions = staffList.map(staffMember => {
+    const availDates = [];
+    if (eventKey    && isAvailableOn(availData, staffMember.id, eventKey))    availDates.push({ key: eventKey,    label: 'Evento' });
+    if (setupKey    && isAvailableOn(availData, staffMember.id, setupKey))    availDates.push({ key: setupKey,    label: 'Montaje' });
+    if (teardownKey && isAvailableOn(availData, staffMember.id, teardownKey)) availDates.push({ key: teardownKey, label: 'Desmontaje' });
+
+    // Buscar en personnel para obtener status
+    const personnelRecord = personnel.find(p => p.name === staffMember.name);
+    const isAssigned = assignedPersonnel?.includes(personnelRecord?.id);
+
+    return { staffMember, personnelRecord, availDates, isAssigned };
+  });
+
+  const available    = suggestions.filter(s => s.availDates.length > 0);
+  const unavailable  = suggestions.filter(s => s.availDates.length === 0);
+  const hasAnyAvail  = available.length > 0;
+
+  return (
+    <div className="suggest-panel">
+      <div className="suggest-header">
+        <span className="suggest-icon">◈</span>
+        <div>
+          <div className="suggest-title">Sugerencias de Personal</div>
+          <div className="suggest-subtitle">Basado en disponibilidad marcada para las fechas del evento</div>
+        </div>
+        {hasAnyAvail && (
+          <span className="badge badge-green" style={{ marginLeft: 'auto', flexShrink: 0 }}>
+            {available.length} disponible{available.length !== 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
+
+      {/* Fechas del evento */}
+      <div className="suggest-dates">
+        {eventKey    && <span className="suggest-date-chip">🎪 Evento: {format(new Date(event.date), 'd MMM', { locale: es })}</span>}
+        {setupKey    && event.setupDate    && <span className="suggest-date-chip">▲ Montaje: {format(new Date(event.setupDate), 'd MMM', { locale: es })}</span>}
+        {teardownKey && event.teardownDate && <span className="suggest-date-chip">▼ Desmontaje: {format(new Date(event.teardownDate), 'd MMM', { locale: es })}</span>}
+      </div>
+
+      {!hasAnyAvail && (
+        <div className="suggest-empty">
+          <span style={{ fontSize: 24, opacity: 0.4 }}>◷</span>
+          <p>Ningún integrante del equipo ha marcado disponibilidad para las fechas de este evento.</p>
+          <p style={{ fontSize: 11, marginTop: 4 }}>Pide al personal que registre su disponibilidad en la sección ◷ Disponibilidad.</p>
+        </div>
+      )}
+
+      {/* Personal disponible */}
+      {available.map(({ staffMember, personnelRecord, availDates, isAssigned }) => (
+        <div key={staffMember.id} className={`suggest-row suggest-row--available ${isAssigned ? 'suggest-row--assigned' : ''}`}>
+          <div className="suggest-avatar" style={{ background: ROLE_COLORS[staffMember.role] }}>
+            {staffMember.avatar}
+          </div>
+          <div className="suggest-info">
+            <div className="suggest-name">{staffMember.name}</div>
+            <div className="suggest-role-badges">
+              <span style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[staffMember.role]}</span>
+              {availDates.map(d => (
+                <span key={d.key} className="suggest-avail-tag">{d.label}</span>
+              ))}
+            </div>
+          </div>
+          <div className="suggest-actions">
+            {isAssigned ? (
+              <span className="badge badge-green" style={{ fontSize: 10 }}>✓ Asignado</span>
+            ) : personnelRecord ? (
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => onAssign(personnelRecord.id)}
+              >
+                + Asignar
+              </button>
+            ) : (
+              <span className="badge badge-gray" style={{ fontSize: 10 }}>Solo app</span>
+            )}
+          </div>
+        </div>
+      ))}
+
+      {/* Separador si hay ambas secciones */}
+      {available.length > 0 && unavailable.length > 0 && (
+        <div style={{ borderTop: '1px solid var(--black-border)', margin: '8px 0', paddingTop: 8 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', color: 'var(--white-faint)', marginBottom: 6 }}>
+            Sin disponibilidad registrada
+          </div>
+        </div>
+      )}
+
+      {/* Personal sin disponibilidad */}
+      {unavailable.map(({ staffMember, personnelRecord, isAssigned }) => (
+        <div key={staffMember.id} className="suggest-row suggest-row--unavailable">
+          <div className="suggest-avatar suggest-avatar--dim" style={{ background: ROLE_COLORS[staffMember.role] + '66' }}>
+            {staffMember.avatar}
+          </div>
+          <div className="suggest-info">
+            <div className="suggest-name" style={{ opacity: 0.5 }}>{staffMember.name}</div>
+            <div style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[staffMember.role]}</div>
+          </div>
+          <span className="badge badge-gray" style={{ fontSize: 10 }}>No registrado</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Componente principal ──────────────────────────────────
 export default function Events() {
-  const { events, addEvent, updateEvent, personnel } = useApp();
+  const { events, addEvent, updateEvent, personnel, availData } = useApp();
   const { hasRole } = useAuth();
   const [view, setView] = useState('list');
   const [showModal, setShowModal] = useState(false);
@@ -24,6 +153,7 @@ export default function Events() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [filterStatus, setFilterStatus] = useState('all');
   const [enrollTab, setEnrollTab] = useState('event');
+  const [assignTab, setAssignTab] = useState('suggestions'); // 'suggestions' | 'all'
 
   const canEdit = hasRole('admin');
 
@@ -43,7 +173,12 @@ export default function Events() {
 
   const openEdit = (ev) => {
     setSelectedEvent(ev);
-    setForm({ ...ev, date: ev.date ? format(new Date(ev.date), 'yyyy-MM-dd') : '', setupDate: ev.setupDate ? format(new Date(ev.setupDate), 'yyyy-MM-dd') : '', teardownDate: ev.teardownDate ? format(new Date(ev.teardownDate), 'yyyy-MM-dd') : '' });
+    setForm({
+      ...ev,
+      date: ev.date ? format(new Date(ev.date), 'yyyy-MM-dd') : '',
+      setupDate: ev.setupDate ? format(new Date(ev.setupDate), 'yyyy-MM-dd') : '',
+      teardownDate: ev.teardownDate ? format(new Date(ev.teardownDate), 'yyyy-MM-dd') : '',
+    });
     setShowModal(true);
   };
 
@@ -55,6 +190,12 @@ export default function Events() {
         ? ev.assignedPersonnel.filter(id => id !== personId)
         : [...ev.assignedPersonnel, personId],
     });
+  };
+
+  const openAssign = (ev) => {
+    setSelectedEvent(ev);
+    setAssignTab('suggestions');
+    setShowAssignModal(true);
   };
 
   return (
@@ -77,7 +218,6 @@ export default function Events() {
         </div>
       </div>
 
-      {/* FILTERS */}
       <div className="events-filters">
         {['all', 'pending', 'confirmed', 'completed', 'cancelled'].map(s => (
           <button key={s} className={`filter-btn ${filterStatus === s ? 'active' : ''}`} onClick={() => setFilterStatus(s)}>
@@ -100,10 +240,8 @@ export default function Events() {
                     <h3 className="event-name">{ev.name}</h3>
                     <div className="event-meta-row">
                       <span>{TYPE_LABELS[ev.type] || ev.type}</span>
-                      <span>•</span>
-                      <span>{ev.client}</span>
-                      <span>•</span>
-                      <span>⌖ {ev.venue}</span>
+                      <span>•</span><span>{ev.client}</span>
+                      <span>•</span><span>⌖ {ev.venue}</span>
                     </div>
                   </div>
                 </div>
@@ -112,7 +250,7 @@ export default function Events() {
                   {canEdit && (
                     <div className="event-actions">
                       <button className="btn btn-ghost btn-sm" onClick={() => openEdit(ev)}>✎ Editar</button>
-                      <button className="btn btn-ghost btn-sm" onClick={() => { setSelectedEvent(ev); setShowAssignModal(true); }}>◉ Personal</button>
+                      <button className="btn btn-ghost btn-sm" onClick={() => openAssign(ev)}>◉ Personal</button>
                     </div>
                   )}
                 </div>
@@ -128,10 +266,7 @@ export default function Events() {
             </div>
           ))}
           {sorted.length === 0 && (
-            <div className="empty-state">
-              <span>◈</span>
-              <p>No hay eventos en esta categoría</p>
-            </div>
+            <div className="empty-state"><span>◈</span><p>No hay eventos en esta categoría</p></div>
           )}
         </div>
       ) : (
@@ -218,7 +353,7 @@ export default function Events() {
       {/* ASSIGN PERSONNEL MODAL */}
       {showAssignModal && selectedEvent && (
         <div className="modal-overlay" onClick={() => setShowAssignModal(false)}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
+          <div className="modal modal--wide" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <div>
                 <h2 className="modal-title">Asignar Personal</h2>
@@ -227,31 +362,66 @@ export default function Events() {
               <button className="btn-ghost" onClick={() => setShowAssignModal(false)}>✕</button>
             </div>
             <div className="modal-body">
-              <div className="enroll-tabs">
-                {['event', 'setup', 'teardown'].map(tab => (
-                  <button key={tab} className={`enroll-tab ${enrollTab === tab ? 'active' : ''}`} onClick={() => setEnrollTab(tab)}>
-                    {tab === 'event' ? '◈ Evento' : tab === 'setup' ? '▲ Montaje' : '▼ Desmontaje'}
-                  </button>
-                ))}
+              {/* Tabs: Sugerencias / Todo el personal */}
+              <div className="enroll-tabs" style={{ marginBottom: 16 }}>
+                <button
+                  className={`enroll-tab ${assignTab === 'suggestions' ? 'active' : ''}`}
+                  onClick={() => setAssignTab('suggestions')}
+                >
+                  ◈ Sugerencias por disponibilidad
+                </button>
+                <button
+                  className={`enroll-tab ${assignTab === 'all' ? 'active' : ''}`}
+                  onClick={() => setAssignTab('all')}
+                >
+                  ◉ Todo el personal
+                </button>
               </div>
-              <p className="text-muted" style={{fontSize:12,marginBottom:12}}>
-                Selecciona el personal para {enrollTab === 'event' ? 'el evento' : enrollTab === 'setup' ? 'montaje' : 'desmontaje'}:
-              </p>
-              <div className="assign-list">
-                {personnel.map(p => {
-                  const assigned = selectedEvent.assignedPersonnel?.includes(p.id);
-                  return (
-                    <div key={p.id} className={`assign-row ${assigned ? 'assigned' : ''}`} onClick={() => assignPersonnel(selectedEvent.id, p.id)}>
-                      <div className="assign-checkbox">{assigned ? '✓' : ''}</div>
-                      <div className="assign-name">{p.name}</div>
-                      <div className="assign-role text-muted">{p.role === 'paramedic' ? 'Paramédico' : 'Piloto'}</div>
-                      <span className={`badge ${p.status === 'available' ? 'badge-green' : 'badge-yellow'}`}>
-                        {p.status === 'available' ? 'Disponible' : 'Asignado'}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+
+              {assignTab === 'suggestions' ? (
+                <StaffSuggestions
+                  event={selectedEvent}
+                  availData={availData}
+                  personnel={personnel}
+                  assignedPersonnel={selectedEvent.assignedPersonnel}
+                  onAssign={(personId) => assignPersonnel(selectedEvent.id, personId)}
+                />
+              ) : (
+                <>
+                  <div className="enroll-tabs" style={{ marginBottom: 12 }}>
+                    {['event', 'setup', 'teardown'].map(tab => (
+                      <button key={tab} className={`enroll-tab ${enrollTab === tab ? 'active' : ''}`} onClick={() => setEnrollTab(tab)}>
+                        {tab === 'event' ? '◈ Evento' : tab === 'setup' ? '▲ Montaje' : '▼ Desmontaje'}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-muted" style={{fontSize:12,marginBottom:12}}>
+                    Selecciona el personal para {enrollTab === 'event' ? 'el evento' : enrollTab === 'setup' ? 'montaje' : 'desmontaje'}:
+                  </p>
+                  <div className="assign-list">
+                    {personnel.map(p => {
+                      const assigned = selectedEvent.assignedPersonnel?.includes(p.id);
+                      // Verificar disponibilidad del personal en la fecha correspondiente
+                      const dateForTab = enrollTab === 'event' ? selectedEvent.date : enrollTab === 'setup' ? selectedEvent.setupDate : selectedEvent.teardownDate;
+                      const dk = toDateKey(dateForTab);
+                      // Buscar staffMember por nombre para cruzar con availData
+                      const staffMatch = ALL_STAFF.find(s => s.name === p.name);
+                      const hasAvail = staffMatch && dk ? isAvailableOn(availData, staffMatch.id, dk) : false;
+                      return (
+                        <div key={p.id} className={`assign-row ${assigned ? 'assigned' : ''}`} onClick={() => assignPersonnel(selectedEvent.id, p.id)}>
+                          <div className="assign-checkbox">{assigned ? '✓' : ''}</div>
+                          <div className="assign-name">{p.name}</div>
+                          <div className="assign-role text-muted">{p.role === 'paramedic' ? 'Paramédico' : 'Piloto'}</div>
+                          {hasAvail && <span className="suggest-avail-tag" style={{ fontSize: 10 }}>Disponible</span>}
+                          <span className={`badge ${p.status === 'available' ? 'badge-green' : 'badge-yellow'}`}>
+                            {p.status === 'available' ? 'Disponible' : 'Asignado'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
             <div className="modal-footer">
               <span className="text-muted" style={{fontSize:12}}>
@@ -274,12 +444,10 @@ function CalendarView({ events }) {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const cells = Array(firstDay).fill(null).concat(Array.from({ length: daysInMonth }, (_, i) => i + 1));
 
-  const getEventsForDay = (day) => {
-    return events.filter(ev => {
-      const d = new Date(ev.date);
-      return d.getFullYear() === year && d.getMonth() === month && d.getDate() === day;
-    });
-  };
+  const getEventsForDay = (day) => events.filter(ev => {
+    const d = new Date(ev.date);
+    return d.getFullYear() === year && d.getMonth() === month && d.getDate() === day;
+  });
 
   return (
     <div className="calendar-view card">
@@ -289,9 +457,7 @@ function CalendarView({ events }) {
         <button className="btn btn-ghost" onClick={() => setCurrentMonth(new Date(year, month + 1))}>▶</button>
       </div>
       <div className="cal-weekdays">
-        {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(d => (
-          <div key={d} className="cal-weekday">{d}</div>
-        ))}
+        {['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].map(d => <div key={d} className="cal-weekday">{d}</div>)}
       </div>
       <div className="cal-grid">
         {cells.map((day, i) => {
