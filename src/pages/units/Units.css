@@ -1,0 +1,95 @@
+.units-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--black-border);
+  padding-bottom: 0;
+}
+
+.units-tab {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--white-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: var(--transition);
+}
+
+.units-tab.active { color: var(--white); border-bottom-color: var(--red); }
+.units-tab:hover:not(.active) { color: var(--white); }
+
+.units-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.unit-card {
+  cursor: pointer;
+  transition: var(--transition);
+}
+.unit-card:hover { border-color: var(--white-faint); }
+.unit-card--selected { border-color: var(--red) !important; background: rgba(204,0,0,0.05); }
+
+.unit-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.unit-type-badge {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius);
+  border: 1px solid;
+}
+
+.unit-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+
+.unit-placa {
+  font-size: 11px;
+  color: var(--white-faint);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.unit-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-top: 1px solid var(--black-border);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+.unit-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--white-muted);
+}
+
+@media (max-width: 768px) {
+  .units-grid { grid-template-columns: 1fr; }
+  .units-tabs { flex-wrap: nowrap; overflow-x: auto; }
+  .units-tab { flex-shrink: 0; font-size: 11px; padding: 8px 10px; }
+}
