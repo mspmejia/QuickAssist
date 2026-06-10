@@ -19,6 +19,7 @@ const AVAIL_TYPES = [
 ];
 
 const STAFF_ROLES = ['paramedic', 'pilot', 'medic'];
+const CONSOLIDATED_ROLES = ['admin', 'paramedic', 'pilot', 'medic'];
 
 const ADMIN_VIEWS = [
   { id: 'consolidated', label: 'Consolidado'  },
@@ -74,7 +75,8 @@ export default function Availability() {
   const [showModal,     setShowModal]     = useState(false);
 
   const staffList = ALL_STAFF.filter(s => STAFF_ROLES.includes(s.role));
-  const [activeStaff, setActiveStaff] = useState(staffList.map(s => s.id));
+  const consolidatedList = ALL_STAFF.filter(s => CONSOLIDATED_ROLES.includes(s.role));
+  const [activeStaff, setActiveStaff] = useState(consolidatedList.map(s => s.id));
 
   const [formType,      setFormType]   = useState('full');
   const [formShifts,    setFormShifts] = useState([]);
@@ -286,7 +288,7 @@ export default function Availability() {
             <div className="card">
               <div className="avail-panel-title">Filtrar personal</div>
               <div className="avail-filter-list">
-                {staffList.map(s => (
+                {consolidatedList.map(s => (
                   <div key={s.id}
                     className={`avail-filter-item ${activeStaff.includes(s.id) ? 'avail-filter-item--active' : ''}`}
                     onClick={() => toggleStaff(s.id)}>
@@ -295,7 +297,9 @@ export default function Availability() {
                       {activeStaff.includes(s.id) && '✓'}
                     </div>
                     <div className="avail-legend-dot" style={{ background: ROLE_COLORS[s.role] }} />
-                    <span style={{ flex: 1, fontSize: 12, color: 'var(--white)', fontWeight: 600 }}>{s.name}</span>
+                    <span style={{ flex: 1, fontSize: 12, color: 'var(--white)', fontWeight: 600 }}>
+                      {s.name}{s.role === 'admin' ? ' (tú)' : ''}
+                    </span>
                     <span style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[s.role]}</span>
                   </div>
                 ))}
@@ -368,18 +372,8 @@ export default function Availability() {
               <div className="form-group">
                 <label className="form-label">¿Para quién?</label>
                 <div className="avail-staff-picker">
-                  {/* Opción: el propio admin */}
-                  <div
-                    className={`avail-staff-option ${editingUserId === user.id ? 'avail-staff-option--active' : ''}`}
-                    style={editingUserId === user.id ? { borderColor: ROLE_COLORS[user.role], background: ROLE_COLORS[user.role] + '22' } : {}}
-                    onClick={() => handleModalStaffSelect(user.id)}
-                  >
-                    <div className="avail-staff-avatar" style={{ background: ROLE_COLORS[user.role] }}>{user.avatar || 'A'}</div>
-                    <div className="avail-staff-name">Yo ({user.name})</div>
-                    {editingUserId === user.id && <span style={{ marginLeft: 'auto', color: '#00C850', fontSize: 14 }}>✓</span>}
-                  </div>
-                  {/* Resto del personal */}
-                  {staffList.map(s => (
+                  {/* Todo el personal incluyendo admin */}
+                  {consolidatedList.map(s => (
                     <div
                       key={s.id}
                       className={`avail-staff-option ${editingUserId === s.id ? 'avail-staff-option--active' : ''}`}
@@ -388,13 +382,17 @@ export default function Availability() {
                     >
                       <div className="avail-staff-avatar" style={{ background: ROLE_COLORS[s.role] }}>{s.avatar}</div>
                       <div>
-                        <div className="avail-staff-name">{s.name}</div>
+                        <div className="avail-staff-name">
+                          {s.name}{s.id === user.id ? ' (tú)' : ''}
+                        </div>
                         <div style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[s.role]}</div>
                       </div>
-                      {availData[selectedDay.key]?.[s.id] && (
-                        <span className="suggest-avail-tag" style={{ marginLeft: 'auto', fontSize: 9 }}>Ya marcado</span>
-                      )}
-                      {editingUserId === s.id && <span style={{ marginLeft: 'auto', color: '#00C850', fontSize: 14 }}>✓</span>}
+                      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+                        {availData[selectedDay?.key]?.[s.id] && (
+                          <span className="suggest-avail-tag" style={{ fontSize: 9 }}>Ya marcado</span>
+                        )}
+                        {editingUserId === s.id && <span style={{ color: '#00C850', fontSize: 14 }}>✓</span>}
+                      </div>
                     </div>
                   ))}
                 </div>
