@@ -44,17 +44,32 @@ const MOCK_USERS = [
 export const ALL_STAFF = MOCK_USERS;
 
 export const ADMIN_STAFF_LIST = [
-  // Usuarios con login
-  { id: 1,  name: 'Carlos Méndez',       role: ROLES.ADMIN,     avatar: 'CM' },
-  { id: 3,  name: 'Diego Torres',         role: ROLES.PARAMEDIC, avatar: 'DT' },
-  { id: 4,  name: 'Luis Hernández',       role: ROLES.PILOT,     avatar: 'LH' },
-  { id: 5,  name: 'Ana Velásquez',        role: ROLES.MEDIC,     avatar: 'AV' },
-  // Personal operativo de AppContext
-  { id: 11, name: 'Dr. Andrés López',     role: ROLES.PARAMEDIC, avatar: 'AL' },
-  { id: 12, name: 'Enf. María Gutiérrez', role: ROLES.PARAMEDIC, avatar: 'MG' },
-  { id: 13, name: 'Tec. Roberto Sánchez', role: ROLES.PARAMEDIC, avatar: 'RS' },
-  { id: 14, name: 'Luis Peña',            role: ROLES.PILOT,     avatar: 'LP' },
-  { id: 15, name: 'Jorge Vásquez',        role: ROLES.PILOT,     avatar: 'JV' },
+  { id: 1,  name: 'Carlos Méndez',        role: ROLES.ADMIN,     avatar: 'CM' },
+  { id: 3,  name: 'Diego Torres',          role: ROLES.PARAMEDIC, avatar: 'DT' },
+  { id: 4,  name: 'Luis Hernández',        role: ROLES.PILOT,     avatar: 'LH' },
+  { id: 5,  name: 'Ana Velásquez',         role: ROLES.MEDIC,     avatar: 'AV' },
+  // IDs coinciden exactamente con MOCK_PERSONNEL en AppContext
+  { id: 6,  name: 'Dra. Claudia Herrera',  role: ROLES.PARAMEDIC, avatar: 'CH' },
+  { id: 7,  name: 'Tec. Felipe Morales',   role: ROLES.PARAMEDIC, avatar: 'FM' },
+  { id: 8,  name: 'Enf. Patricia Ríos',    role: ROLES.PARAMEDIC, avatar: 'PR' },
+  { id: 9,  name: 'Dr. Samuel Ortiz',      role: ROLES.PARAMEDIC, avatar: 'SO' },
+  { id: 10, name: 'Tec. Karen Salinas',    role: ROLES.PARAMEDIC, avatar: 'KS' },
+  { id: 11, name: 'Marco Reyes',           role: ROLES.PILOT,     avatar: 'MR' },
+  { id: 12, name: 'Óscar Mendoza',         role: ROLES.PILOT,     avatar: 'OM' },
+  { id: 13, name: 'Enf. Lucía Vargas',     role: ROLES.PARAMEDIC, avatar: 'LV' },
+  { id: 14, name: 'Dr. Héctor Fuentes',    role: ROLES.PARAMEDIC, avatar: 'HF' },
+  { id: 15, name: 'Tec. Daniela Castro',   role: ROLES.PARAMEDIC, avatar: 'DC' },
+  { id: 16, name: 'Ramón Espinoza',        role: ROLES.PILOT,     avatar: 'RE' },
+  { id: 17, name: 'Enf. Adriana Leal',     role: ROLES.PARAMEDIC, avatar: 'AL2'},
+  { id: 18, name: 'Dr. Iván Contreras',    role: ROLES.PARAMEDIC, avatar: 'IC' },
+  { id: 19, name: 'Gerardo Núñez',         role: ROLES.PILOT,     avatar: 'GN' },
+  { id: 20, name: 'Tec. Sofía Delgado',    role: ROLES.PARAMEDIC, avatar: 'SD' },
+  // Paramédicos con login (ids 1-5 ya incluidos arriba excepto admin/medic/accounting)
+  { id: 101, name: 'Dr. Andrés López',     role: ROLES.PARAMEDIC, avatar: 'AL' },
+  { id: 102, name: 'Enf. María Gutiérrez', role: ROLES.PARAMEDIC, avatar: 'MG' },
+  { id: 103, name: 'Tec. Roberto Sánchez', role: ROLES.PARAMEDIC, avatar: 'RS' },
+  { id: 104, name: 'Luis Peña',            role: ROLES.PILOT,     avatar: 'LP' },
+  { id: 105, name: 'Jorge Vásquez',        role: ROLES.PILOT,     avatar: 'JV' },
 ];
 
 export function AuthProvider({ children }) {
