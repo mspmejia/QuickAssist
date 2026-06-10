@@ -98,7 +98,11 @@ export default function Personnel() {
 
             <div className="person-actions">
               <button className="btn btn-outline btn-sm" onClick={() => openEdit(p)}>✎ Editar</button>
-              <button className="btn btn-ghost btn-sm" onClick={() => setPersonnel(prev => prev.map(pp => pp.id === p.id ? { ...pp, status: pp.status === 'active' || pp.status === 'available' ? 'inactive' : 'available' } : pp))}>
+              <button className="btn btn-ghost btn-sm" onClick={() => {
+                const isActive = p.status !== 'inactive';
+                if (isActive && !window.confirm(`¿Desactivar a ${p.name}? No aparecerá en sugerencias de eventos.`)) return;
+                setPersonnel(prev => prev.map(pp => pp.id === p.id ? { ...pp, status: pp.status === 'active' || pp.status === 'available' ? 'inactive' : 'available' } : pp));
+              }}>
                 {p.status === 'inactive' ? '✓ Activar' : '✕ Desactivar'}
               </button>
             </div>
