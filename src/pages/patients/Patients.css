@@ -44,3 +44,51 @@
 .vital-value { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--white); }
 .vital-unit { font-size: 10px; color: var(--white-faint); }
 .vital-label { font-size: 11px; font-weight: 600; color: var(--white-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Responsivo móvil ────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Tabla: scroll horizontal controlado */
+  .patients-table .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ocultar columnas de bajo valor en pantalla pequeña */
+  .patients-table th:nth-child(3),
+  .patients-table td:nth-child(3),
+  .patients-table th:nth-child(5),
+  .patients-table td:nth-child(5) {
+    display: none;
+  }
+
+  /* Folio más compacto */
+  .folio-code { font-size: 11px; letter-spacing: 0; }
+
+  /* Forzar word-break en columna Evento */
+  .patients-table td:nth-child(2) {
+    max-width: 120px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  /* form-grid-2 → 1 columna en modales */
+  .form-grid-2 { grid-template-columns: 1fr; }
+
+  /* Vitals: 3 col en vez de 5 */
+  .vitals-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Vitals display wrap */
+  .vitals-display { gap: 8px; }
+  .vital-box { min-width: 60px; padding: 8px; }
+  .vital-value { font-size: 18px; }
+
+  /* ficha-view-grid → 1 col */
+  .ficha-view-grid { grid-template-columns: 1fr; }
+
+  /* Filtro select full width */
+  .patients-filters select { width: 100% !important; }
+}
+
+@media (max-width: 480px) {
+  .vitals-grid { grid-template-columns: repeat(2, 1fr); }
+}
