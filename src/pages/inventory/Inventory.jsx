@@ -80,6 +80,35 @@ export default function Inventory() {
       </div>
 
       <div className="card">
+        {/* Vista tarjetas — solo móvil */}
+        <div className="inv-card-list">
+          {filtered.map(item => (
+            <div key={item.id} className="inv-card">
+              <div className="inv-card-header">
+                <div className="inv-card-name">{item.name}</div>
+                <span className={`badge ${item.status === 'critical' ? 'badge-red' : item.status === 'low' ? 'badge-yellow' : 'badge-green'}`}>
+                  {item.status === 'critical' ? '⚠ Crítico' : item.status === 'low' ? '↓ Bajo' : '✓ OK'}
+                </span>
+              </div>
+              <div className="inv-card-body">
+                <span className="badge badge-gray">{CATEGORY_LABELS[item.category]}</span>
+                <div className="inv-card-stat">
+                  <span className={`inv-card-stat-val inv-qty ${item.status === 'critical' ? 'critical' : item.status === 'low' ? 'low' : ''}`}>{item.quantity}</span>
+                  <span className="inv-card-stat-label">{item.unit} actual</span>
+                </div>
+                <div style={{ color: 'var(--white-faint)', fontSize: 12 }}>mín: {item.minStock}</div>
+              </div>
+              <div className="inv-card-actions">
+                <button className="btn btn-outline btn-sm" onClick={() => { setAdjustItem(item); setAdjustQty(''); }}>± Ajustar</button>
+                <button className="btn btn-ghost btn-sm" onClick={() => { setSelectedItem(item); setForm({...item, quantity: String(item.quantity), minStock: String(item.minStock)}); setShowModal(true); }}>✎ Editar</button>
+              </div>
+            </div>
+          ))}
+          {filtered.length === 0 && <p style={{textAlign:'center',color:'var(--white-faint)',padding:32,fontSize:13}}>Sin artículos</p>}
+        </div>
+
+        {/* Vista tabla — solo desktop */}
+        <div className="inv-table-wrap">
         <div className="table-wrap">
           <table>
             <thead>
@@ -120,6 +149,7 @@ export default function Inventory() {
               ))}
             </tbody>
           </table>
+        </div>
         </div>
       </div>
 
