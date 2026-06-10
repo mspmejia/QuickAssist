@@ -72,10 +72,6 @@ export const MOCK_PATIENTS = [
   { id: 14, folio: 'QA-2026-014', eventId: 7,  eventName: 'Congreso Nacional de Medicina',date:s(10),patientName: 'Anónimo', age: 72, gender: 'M', reason: 'Mareo y náuseas',      vitals: { bp: '135/88',  hr: 70,  spo2: 96, temp: 36.9, rr: 18 }, treatment: 'Antieméticos, hidratación, observación 1h',                  transport: false, outcome: 'Alta en sitio',         attendedBy: 'Dr. Héctor Fuentes',   status: 'closed' },
   { id: 15, folio: 'QA-2026-015', eventId: 9,  eventName: 'Concierto Pop Verano',        date: d(3),  patientName: 'Anónimo', age: 25, gender: 'F', reason: 'Contusión pie',        vitals: { bp: '118/74',  hr: 84,  spo2: 99, temp: 36.3, rr: 15 }, treatment: 'Radiografía descartada, vendaje, muletas',                   transport: false, outcome: 'Alta en sitio',         attendedBy: 'Tec. Felipe Morales',  status: 'open'   },
   { id: 16, folio: 'QA-2026-016', eventId: 9,  eventName: 'Concierto Pop Verano',        date: d(3),  patientName: 'Anónimo', age: 33, gender: 'M', reason: 'Ansiedad / pánico',    vitals: { bp: '145/92',  hr: 120, spo2: 98, temp: 36.8, rr: 26 }, treatment: 'Técnica de respiración, lorazepam 1mg VO, observación',      transport: false, outcome: 'Alta en sitio',         attendedBy: 'Dr. Samuel Ortiz',     status: 'open'   },
-  { id: 17, folio: 'QA-2026-017', eventId: 2,  eventName: 'Partido Clásico Nacional',    date: d(12), patientName: 'Anónimo', age: 0,  gender: 'M', reason: 'Pendiente',            vitals: { bp: '',        hr: 0,   spo2: 0,  temp: 0,    rr: 0  }, treatment: '',                                                           transport: false, outcome: '',                      attendedBy: '',                     status: 'open'   },
-  { id: 18, folio: 'QA-2026-018', eventId: 1,  eventName: 'Concierto Rock en Grande',    date: d(5),  patientName: 'Anónimo', age: 0,  gender: 'M', reason: 'Pendiente',            vitals: { bp: '',        hr: 0,   spo2: 0,  temp: 0,    rr: 0  }, treatment: '',                                                           transport: false, outcome: '',                      attendedBy: '',                     status: 'open'   },
-  { id: 19, folio: 'QA-2026-019', eventId: 15, eventName: 'Torneo de Boxeo',             date: d(10), patientName: 'Anónimo', age: 0,  gender: 'M', reason: 'Pendiente',            vitals: { bp: '',        hr: 0,   spo2: 0,  temp: 0,    rr: 0  }, treatment: '',                                                           transport: false, outcome: '',                      attendedBy: '',                     status: 'open'   },
-  { id: 20, folio: 'QA-2026-020', eventId: 5,  eventName: 'Copa América Semifinal',      date: d(8),  patientName: 'Anónimo', age: 0,  gender: 'M', reason: 'Pendiente',            vitals: { bp: '',        hr: 0,   spo2: 0,  temp: 0,    rr: 0  }, treatment: '',                                                           transport: false, outcome: '',                      attendedBy: '',                     status: 'open'   },
 ];
 
 // ── 20 INVENTARIO ─────────────────────────────────────────
@@ -109,26 +105,26 @@ const mkDate = (daysOffset) => {
 };
 
 export const MOCK_AVAIL_DATA = {
-  [mkDate(1)]:  { 11: { type: 'full' }, 14: { type: 'shift', shifts: ['morning','afternoon'] } },
-  [mkDate(2)]:  { 12: { type: 'shift', shifts: ['morning'] }, 15: { type: 'full' } },
-  [mkDate(3)]:  { 11: { type: 'full' }, 13: { type: 'shift', shifts: ['afternoon','night'] }, 3: { type: 'full' } },
-  [mkDate(5)]:  { 11: { type: 'full' }, 12: { type: 'full' }, 14: { type: 'full' }, 4: { type: 'full' } },
-  [mkDate(7)]:  { 13: { type: 'range', from: '08:00', to: '18:00' }, 5: { type: 'full' } },
-  [mkDate(8)]:  { 11: { type: 'full' }, 14: { type: 'full' }, 15: { type: 'shift', shifts: ['morning'] }, 3: { type: 'full' }, 4: { type: 'full' } },
-  [mkDate(10)]: { 12: { type: 'shift', shifts: ['afternoon','night'] }, 13: { type: 'full' }, 5: { type: 'full' } },
-  [mkDate(12)]: { 11: { type: 'full' }, 14: { type: 'full' }, 15: { type: 'full' }, 3: { type: 'full' }, 4: { type: 'full' } },
-  [mkDate(14)]: { 12: { type: 'range', from: '07:00', to: '15:00' }, 13: { type: 'full' } },
-  [mkDate(15)]: { 11: { type: 'full' }, 14: { type: 'full' }, 5: { type: 'shift', shifts: ['morning','afternoon'] } },
-  [mkDate(17)]: { 12: { type: 'full' }, 13: { type: 'full' }, 15: { type: 'shift', shifts: ['night'] }, 3: { type: 'full' } },
-  [mkDate(18)]: { 11: { type: 'full' }, 14: { type: 'full' }, 15: { type: 'full' }, 4: { type: 'full' } },
-  [mkDate(20)]: { 12: { type: 'full' }, 13: { type: 'full' }, 5: { type: 'full' } },
-  [mkDate(22)]: { 11: { type: 'range', from: '09:00', to: '21:00' }, 14: { type: 'full' }, 3: { type: 'full' } },
-  [mkDate(24)]: { 12: { type: 'shift', shifts: ['morning'] }, 13: { type: 'full' }, 15: { type: 'full' } },
-  [mkDate(25)]: { 11: { type: 'full' }, 12: { type: 'full' }, 14: { type: 'full' }, 15: { type: 'full' }, 3: { type: 'full' }, 4: { type: 'full' } },
-  [mkDate(27)]: { 13: { type: 'full' }, 5: { type: 'shift', shifts: ['afternoon','night'] } },
-  [mkDate(29)]: { 11: { type: 'full' }, 14: { type: 'full' }, 3: { type: 'full' } },
-  [mkDate(30)]: { 12: { type: 'full' }, 15: { type: 'full' }, 4: { type: 'full' }, 5: { type: 'full' } },
-  [mkDate(32)]: { 11: { type: 'full' }, 13: { type: 'range', from: '08:00', to: '16:00' }, 14: { type: 'full' } },
+  [mkDate(1)]:  { 1: { type: 'full' }, 4: { type: 'shift', shifts: ['morning','afternoon'] } },
+  [mkDate(2)]:  { 2: { type: 'shift', shifts: ['morning'] }, 14: { type: 'full' } },
+  [mkDate(3)]:  { 1: { type: 'full' }, 3: { type: 'shift', shifts: ['afternoon','night'] }, 3: { type: 'full' } },
+  [mkDate(5)]:  { 1: { type: 'full' }, 2: { type: 'full' }, 4: { type: 'full' }, 11: { type: 'full' } },
+  [mkDate(7)]:  { 3: { type: 'range', from: '08:00', to: '18:00' }, 12: { type: 'full' } },
+  [mkDate(8)]:  { 1: { type: 'full' }, 4: { type: 'full' }, 6: { type: 'shift', shifts: ['morning'] }, 3: { type: 'full' }, 11: { type: 'full' } },
+  [mkDate(10)]: { 2: { type: 'shift', shifts: ['afternoon','night'] }, 7: { type: 'full' }, 12: { type: 'full' } },
+  [mkDate(12)]: { 1: { type: 'full' }, 4: { type: 'full' }, 8: { type: 'full' }, 3: { type: 'full' }, 11: { type: 'full' } },
+  [mkDate(14)]: { 2: { type: 'range', from: '07:00', to: '15:00' }, 9: { type: 'full' } },
+  [mkDate(15)]: { 1: { type: 'full' }, 4: { type: 'full' }, 13: { type: 'shift', shifts: ['morning','afternoon'] } },
+  [mkDate(17)]: { 2: { type: 'full' }, 6: { type: 'full' }, 14: { type: 'shift', shifts: ['night'] }, 3: { type: 'full' } },
+  [mkDate(18)]: { 1: { type: 'full' }, 4: { type: 'full' }, 7: { type: 'full' }, 11: { type: 'full' } },
+  [mkDate(20)]: { 2: { type: 'full' }, 8: { type: 'full' }, 12: { type: 'full' } },
+  [mkDate(22)]: { 1: { type: 'range', from: '09:00', to: '21:00' }, 4: { type: 'full' }, 3: { type: 'full' } },
+  [mkDate(24)]: { 2: { type: 'shift', shifts: ['morning'] }, 9: { type: 'full' }, 13: { type: 'full' } },
+  [mkDate(25)]: { 1: { type: 'full' }, 2: { type: 'full' }, 4: { type: 'full' }, 6: { type: 'full' }, 3: { type: 'full' }, 11: { type: 'full' } },
+  [mkDate(27)]: { 7: { type: 'full' }, 12: { type: 'shift', shifts: ['afternoon','night'] } },
+  [mkDate(29)]: { 1: { type: 'full' }, 4: { type: 'full' }, 3: { type: 'full' } },
+  [mkDate(30)]: { 2: { type: 'full' }, 8: { type: 'full' }, 11: { type: 'full' }, 12: { type: 'full' } },
+  [mkDate(32)]: { 1: { type: 'full' }, 9: { type: 'range', from: '08:00', to: '16:00' }, 4: { type: 'full' } },
 };
 
 // ── PROVIDER ──────────────────────────────────────────────
