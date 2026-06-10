@@ -356,3 +356,53 @@
   .avail-chip { display: none; }
   .avail-day-num { font-size: 11px; }
 }
+
+/* ── Staff picker (modal consolidado) ───────────────────── */
+.avail-staff-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 4px;
+}
+
+.avail-staff-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--black-border);
+  background: var(--black-soft);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.avail-staff-option:hover {
+  border-color: var(--white-faint);
+  background: rgba(255,255,255,0.05);
+}
+
+.avail-staff-option--active {
+  border-color: var(--red);
+}
+
+.avail-staff-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.avail-staff-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+}
