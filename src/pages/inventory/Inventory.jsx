@@ -41,7 +41,11 @@ export default function Inventory() {
 
   const handleAdjust = (dir) => {
     const delta = Number(adjustQty) * (dir === '+' ? 1 : -1);
-    updateInventory(adjustItem.id, { quantity: Math.max(0, adjustItem.quantity + delta) });
+    const newQty = adjustItem.quantity + delta;
+    if (dir === '-' && newQty < 0) {
+      alert(`Stock insuficiente. Solo hay ${adjustItem.quantity} ${adjustItem.unit} disponibles. Se ajustará a 0.`);
+    }
+    updateInventory(adjustItem.id, { quantity: Math.max(0, newQty) });
     setAdjustItem(null);
     setAdjustQty('');
   };
@@ -58,7 +62,7 @@ export default function Inventory() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Inventario</h1>
-          <p className="page-subtitle">Control de equipos, insumos y medicamentos</p>
+          <p className="page-subtitle">{inventory.length} artículos registrados · {withStatus.filter(i=>i.status==='critical').length} críticos</p>
         </div>
         <button className="btn btn-primary" onClick={() => { setSelectedItem(null); setForm(EMPTY_FORM); setShowModal(true); }}>
           + Agregar Artículo
@@ -90,7 +94,7 @@ export default function Inventory() {
               <div className="inv-card-header">
                 <div className="inv-card-name">{item.name}</div>
                 <span className={`badge ${item.status === 'critical' ? 'badge-red' : item.status === 'low' ? 'badge-yellow' : 'badge-green'}`}>
-                  {item.status === 'critical' ? '⚠ Crítico' : item.status === 'low' ? '↓ Bajo' : '✓ OK'}
+                  {item.status === 'critical' ? '⚠ Crítico' : item.status === 'low' ? '↓ Bajo' : '✓ Suficiente'}
                 </span>
               </div>
               <div className="inv-card-body">
@@ -150,7 +154,7 @@ export default function Inventory() {
                   </td>
                   <td>
                     <span className={`badge ${item.status === 'critical' ? 'badge-red' : item.status === 'low' ? 'badge-yellow' : 'badge-green'}`}>
-                      {item.status === 'critical' ? '⚠ Crítico' : item.status === 'low' ? '↓ Bajo' : '✓ OK'}
+                      {item.status === 'critical' ? '⚠ Crítico' : item.status === 'low' ? '↓ Bajo' : '✓ Suficiente'}
                     </span>
                   </td>
                   <td>
@@ -234,6 +238,9 @@ export default function Inventory() {
               <div className="form-group">
                 <label className="form-label">Cantidad a ajustar</label>
                 <input className="form-input" type="number" min="1" value={adjustQty} onChange={e => setAdjustQty(e.target.value)} placeholder="Ingresa cantidad" />
+                {adjustQty && Number(adjustQty) > adjustItem.quantity && (
+                  <span style={{fontSize:11,color:'#FFB400'}}>⚠ Supera el stock disponible ({adjustItem.quantity} {adjustItem.unit}). Se ajustará a 0.</span>
+                )}
               </div>
             </div>
             <div className="modal-footer">
