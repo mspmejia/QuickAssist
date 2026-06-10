@@ -105,7 +105,7 @@ export default function Dashboard() {
         <div className="card">
           <div className="card-header-row">
             <span className="card-label">Estado del Personal</span>
-            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/personnel')}>Ver todo</button>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/personnel')}>Ver todo ({personnel.length})</button>
           </div>
           <div className="personnel-list">
             {personnel.slice(0, 5).map(p => (
