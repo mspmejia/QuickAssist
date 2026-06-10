@@ -11,6 +11,7 @@ import Personnel from './pages/personnel/Personnel';
 import Inventory from './pages/inventory/Inventory';
 import Accounting from './pages/accounting/Accounting';
 import Reports from './pages/reports/Reports';
+import Availability from './pages/availability/Availability';
 import './index.css';
 
 export default function App() {
@@ -22,13 +23,14 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/patients" element={<Patients />} />
-              <Route path="/personnel" element={<Personnel />} />
-              <Route path="/inventory" element={<Inventory />} />
-              <Route path="/accounting" element={<Accounting />} />
-              <Route path="/reports" element={<Reports />} />
+              <Route path="/dashboard"    element={<Dashboard />} />
+              <Route path="/events"       element={<Events />} />
+              <Route path="/patients"     element={<Patients />} />
+              <Route path="/personnel"    element={<Personnel />} />
+              <Route path="/inventory"    element={<Inventory />} />
+              <Route path="/accounting"   element={<Accounting />} />
+              <Route path="/reports"      element={<Reports />} />
+              <Route path="/availability" element={<Availability />} />
             </Route>
           </Routes>
         </AppProvider>
