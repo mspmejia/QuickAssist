@@ -83,11 +83,13 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="login-hints">
-          <p>Accesos de prueba:</p>
-          <div className="login-hint-row"><span>admin@quickassist.com</span><span>/ 1234</span></div>
-          <div className="login-hint-row"><span>paramedic@quickassist.com</span><span>/ 1234</span></div>
-        </div>
+        {process.env.NODE_ENV === 'development' && (
+          <div className="login-hints">
+            <p>Accesos de prueba:</p>
+            <div className="login-hint-row"><span>admin@quickassist.com</span><span>/ 1234</span></div>
+            <div className="login-hint-row"><span>paramedic@quickassist.com</span><span>/ 1234</span></div>
+          </div>
+        )}
       </div>
 
       <div className="login-footer">
