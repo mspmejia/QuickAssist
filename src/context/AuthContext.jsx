@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
 
@@ -8,6 +8,7 @@ export const ROLES = {
   PARAMEDIC: 'paramedic',
   PILOT: 'pilot',
   INVENTORY: 'inventory',
+  MEDIC: 'medic',
 };
 
 export const ROLE_LABELS = {
@@ -16,6 +17,7 @@ export const ROLE_LABELS = {
   paramedic: 'Paramédico',
   pilot: 'Piloto',
   inventory: 'Inventario',
+  medic: 'Médico',
 };
 
 export const ROLE_COLORS = {
@@ -24,15 +26,18 @@ export const ROLE_COLORS = {
   paramedic: '#00C850',
   pilot: '#0088FF',
   inventory: '#AA44FF',
+  medic: '#FF6B35',
 };
 
-// Mock users
 const MOCK_USERS = [
-  { id: 1, name: 'Carlos Méndez', email: 'admin@quickassist.com', password: '1234', role: ROLES.ADMIN, avatar: 'CM' },
-  { id: 2, name: 'Sofía Ramírez', email: 'contabilidad@quickassist.com', password: '1234', role: ROLES.ACCOUNTING, avatar: 'SR' },
-  { id: 3, name: 'Diego Torres', email: 'paramedic@quickassist.com', password: '1234', role: ROLES.PARAMEDIC, avatar: 'DT' },
-  { id: 4, name: 'Luis Hernández', email: 'piloto@quickassist.com', password: '1234', role: ROLES.PILOT, avatar: 'LH' },
+  { id: 1, name: 'Carlos Méndez',   email: 'admin@quickassist.com',          password: '1234', role: ROLES.ADMIN,      avatar: 'CM' },
+  { id: 2, name: 'Sofía Ramírez',   email: 'contabilidad@quickassist.com',   password: '1234', role: ROLES.ACCOUNTING, avatar: 'SR' },
+  { id: 3, name: 'Diego Torres',    email: 'paramedic@quickassist.com',      password: '1234', role: ROLES.PARAMEDIC,  avatar: 'DT' },
+  { id: 4, name: 'Luis Hernández',  email: 'piloto@quickassist.com',         password: '1234', role: ROLES.PILOT,      avatar: 'LH' },
+  { id: 5, name: 'Ana Velásquez',   email: 'medico@quickassist.com',         password: '1234', role: ROLES.MEDIC,      avatar: 'AV' },
 ];
+
+export const ALL_STAFF = MOCK_USERS;
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
