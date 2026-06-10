@@ -12,6 +12,8 @@ const NAV_ITEMS = [
   { to: '/accounting',   icon: '◎', label: 'Contabilidad',     roles: ['admin', 'accounting'] },
   { to: '/reports',      icon: '◐', label: 'Reportería',       roles: ['admin', 'accounting'] },
   { to: '/availability', icon: '◷', label: 'Disponibilidad',   roles: ['admin', 'paramedic', 'pilot', 'medic'] },
+  { to: '/companies',    icon: '◈', label: 'Empresas',          roles: ['admin'] },
+  { to: '/units',        icon: '🚑', label: 'Unidades',         roles: ['admin'] },
 ];
 
 const MOBILE_BREAKPOINT = 768;
