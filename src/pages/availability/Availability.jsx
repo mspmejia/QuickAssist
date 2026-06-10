@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useAuth, ALL_STAFF, ROLE_LABELS, ROLE_COLORS } from '../../context/AuthContext';
+import { useAuth, ALL_STAFF, ADMIN_STAFF_LIST, ROLE_LABELS, ROLE_COLORS } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
 import './Availability.css';
 
@@ -73,9 +73,10 @@ export default function Availability() {
   const [selectedDay,   setSelectedDay]   = useState(null);
   const [showModal,     setShowModal]     = useState(false);
 
-  const staffList = ALL_STAFF.filter(s => STAFF_ROLES.includes(s.role));
-  const consolidatedList = ALL_STAFF; // ya excluye contabilidad e inventario
-  const [activeStaff, setActiveStaff] = useState(consolidatedList.map(s => s.id));
+  // Admin ve todo el personal operativo; otros roles solo se ven a sí mismos
+  const staffList       = isAdmin ? ADMIN_STAFF_LIST.filter(s => STAFF_ROLES.includes(s.role)) : [];
+  const consolidatedList = isAdmin ? ADMIN_STAFF_LIST : [];
+  const [activeStaff, setActiveStaff] = useState(ADMIN_STAFF_LIST.map(s => s.id));
 
   const [formType,      setFormType]   = useState('full');
   const [formShifts,    setFormShifts] = useState([]);
@@ -173,7 +174,7 @@ export default function Availability() {
     return Object.entries(dayData)
       .filter(([uid]) => activeStaff.includes(Number(uid)))
       .map(([uid, entry]) => {
-        const s = ALL_STAFF.find(x => x.id === Number(uid));
+        const s = ADMIN_STAFF_LIST.find(x => x.id === Number(uid));
         if (!s) return null;
         return { color: ROLE_COLORS[s.role], label: s.avatar + ' ' + entryLabel(entry) };
       }).filter(Boolean);
@@ -203,7 +204,7 @@ export default function Availability() {
   const toggleStaff = (id) => setActiveStaff(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   const toggleShift = (id) => setFormShifts(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
-  const editingUser = ALL_STAFF.find(s => s.id === editingUserId);
+  const editingUser = ADMIN_STAFF_LIST.find(s => s.id === editingUserId);
 
   return (
     <div>
