@@ -375,3 +375,20 @@
   .events-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
   .filter-btn { flex-shrink: 0; }
 }
+
+/* ── Diferenciación visual de eventos pasados ────────────── */
+.event-card--completed { opacity: 0.6; }
+.event-card--cancelled { opacity: 0.45; filter: grayscale(0.3); }
+
+/* ── input con error ─────────────────────────────────────── */
+.input-error { border-color: var(--red) !important; box-shadow: 0 0 0 2px rgba(204,0,0,0.15) !important; }
+
+/* ── Zona toque mínima para botón cerrar modal ───────────── */
+.modal-header .btn-ghost {
+  padding: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
