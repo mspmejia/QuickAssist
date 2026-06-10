@@ -96,10 +96,19 @@ export default function Availability() {
   const handleDayClick = (day) => {
     if (!day || isPast(viewYear, viewMonth, day)) return;
     const key = dateKey(viewYear, viewMonth, day);
+    setSelectedDay({ day, key });
+
+    // En consolidado el admin elige la persona dentro del modal
+    if (isAdmin && adminView === 'consolidated') {
+      setEditingUserId(null);
+      setFormType('full'); setFormShifts([]); setFormFrom('08:00'); setFormTo('16:00');
+      setShowModal(true);
+      return;
+    }
+
     let uid = user.id;
     if (isAdmin && adminView === 'by-person' && selectedStaff) uid = selectedStaff.id;
     setEditingUserId(uid);
-    setSelectedDay({ day, key });
     const existing = availData[key]?.[uid];
     if (existing) {
       setFormType(existing.type);
@@ -110,6 +119,21 @@ export default function Availability() {
       setFormType('full'); setFormShifts([]); setFormFrom('08:00'); setFormTo('16:00');
     }
     setShowModal(true);
+  };
+
+  // Cuando el admin selecciona persona en el modal consolidado, cargar sus datos existentes
+  const handleModalStaffSelect = (uid) => {
+    setEditingUserId(uid);
+    if (!selectedDay) return;
+    const existing = availData[selectedDay.key]?.[uid];
+    if (existing) {
+      setFormType(existing.type);
+      setFormShifts(existing.shifts || []);
+      setFormFrom(existing.from || '08:00');
+      setFormTo(existing.to || '16:00');
+    } else {
+      setFormType('full'); setFormShifts([]); setFormFrom('08:00'); setFormTo('16:00');
+    }
   };
 
   const handleSave = () => {
@@ -338,6 +362,46 @@ export default function Availability() {
             <div className="avail-modal-title">
               {String(selectedDay.day).padStart(2,'0')} {MONTHS[viewMonth]} {viewYear}
             </div>
+
+            {/* Selector de persona — solo en vista consolidada (admin) */}
+            {isAdmin && adminView === 'consolidated' && (
+              <div className="form-group">
+                <label className="form-label">¿Para quién?</label>
+                <div className="avail-staff-picker">
+                  {/* Opción: el propio admin */}
+                  <div
+                    className={`avail-staff-option ${editingUserId === user.id ? 'avail-staff-option--active' : ''}`}
+                    style={editingUserId === user.id ? { borderColor: ROLE_COLORS[user.role], background: ROLE_COLORS[user.role] + '22' } : {}}
+                    onClick={() => handleModalStaffSelect(user.id)}
+                  >
+                    <div className="avail-staff-avatar" style={{ background: ROLE_COLORS[user.role] }}>{user.avatar || 'A'}</div>
+                    <div className="avail-staff-name">Yo ({user.name})</div>
+                    {editingUserId === user.id && <span style={{ marginLeft: 'auto', color: '#00C850', fontSize: 14 }}>✓</span>}
+                  </div>
+                  {/* Resto del personal */}
+                  {staffList.map(s => (
+                    <div
+                      key={s.id}
+                      className={`avail-staff-option ${editingUserId === s.id ? 'avail-staff-option--active' : ''}`}
+                      style={editingUserId === s.id ? { borderColor: ROLE_COLORS[s.role], background: ROLE_COLORS[s.role] + '22' } : {}}
+                      onClick={() => handleModalStaffSelect(s.id)}
+                    >
+                      <div className="avail-staff-avatar" style={{ background: ROLE_COLORS[s.role] }}>{s.avatar}</div>
+                      <div>
+                        <div className="avail-staff-name">{s.name}</div>
+                        <div style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[s.role]}</div>
+                      </div>
+                      {availData[selectedDay.key]?.[s.id] && (
+                        <span className="suggest-avail-tag" style={{ marginLeft: 'auto', fontSize: 9 }}>Ya marcado</span>
+                      )}
+                      {editingUserId === s.id && <span style={{ marginLeft: 'auto', color: '#00C850', fontSize: 14 }}>✓</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Indicador de persona en vista by-person */}
             {isAdmin && adminView === 'by-person' && editingUser && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 'var(--radius)', background: ROLE_COLORS[editingUser.role] + '22', border: `1px solid ${ROLE_COLORS[editingUser.role]}44`, marginBottom: 16, fontSize: 12 }}>
                 <div style={{ width: 28, height: 28, borderRadius: '50%', background: ROLE_COLORS[editingUser.role], display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 10, color: 'white' }}>{editingUser.avatar}</div>
@@ -345,6 +409,9 @@ export default function Availability() {
                 <span style={{ color: 'var(--white-faint)', marginLeft: 'auto' }}>{ROLE_LABELS[editingUser.role]}</span>
               </div>
             )}
+
+            {/* Form de disponibilidad — solo visible si hay persona seleccionada */}
+            {(!isAdmin || adminView !== 'consolidated' || editingUserId !== null) && (
             <div className="form-group">
               <label className="form-label">Tipo de disponibilidad</label>
               <div className="avail-type-grid">
@@ -391,8 +458,16 @@ export default function Availability() {
                 <button className="btn btn-outline btn-sm" onClick={handleRemove} style={{ color: 'var(--red)', borderColor: 'var(--red)' }}>Eliminar</button>
               )}
               <button className="btn btn-outline btn-sm" onClick={() => setShowModal(false)}>Cancelar</button>
-              <button className="btn btn-primary btn-sm" onClick={handleSave}>Guardar</button>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={handleSave}
+                disabled={isAdmin && adminView === 'consolidated' && editingUserId === null}
+                style={(isAdmin && adminView === 'consolidated' && editingUserId === null) ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
+              >
+                Guardar
+              </button>
             </div>
+            )}
           </div>
         </div>
       )}
