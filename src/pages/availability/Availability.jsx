@@ -19,7 +19,6 @@ const AVAIL_TYPES = [
 ];
 
 const STAFF_ROLES = ['paramedic', 'pilot', 'medic'];
-const CONSOLIDATED_ROLES = ['admin', 'paramedic', 'pilot', 'medic'];
 
 const ADMIN_VIEWS = [
   { id: 'consolidated', label: 'Consolidado'  },
@@ -75,7 +74,7 @@ export default function Availability() {
   const [showModal,     setShowModal]     = useState(false);
 
   const staffList = ALL_STAFF.filter(s => STAFF_ROLES.includes(s.role));
-  const consolidatedList = ALL_STAFF.filter(s => CONSOLIDATED_ROLES.includes(s.role));
+  const consolidatedList = ALL_STAFF; // ya excluye contabilidad e inventario
   const [activeStaff, setActiveStaff] = useState(consolidatedList.map(s => s.id));
 
   const [formType,      setFormType]   = useState('full');
@@ -351,7 +350,7 @@ export default function Availability() {
           <div className="card">
             <div className="avail-panel-title">Cómo usar</div>
             <p style={{ fontSize: 12, color: 'var(--white-muted)', lineHeight: 1.6 }}>
-              {isAdmin && adminView === 'consolidated' && 'Vista general del equipo. Filtra para mostrar u ocultar personas. Haz click en un día para editar tu disponibilidad.'}
+              {isAdmin && adminView === 'consolidated' && 'Haz click en cualquier día futuro para marcar disponibilidad. Puedes elegir para quién dentro del mismo modal.'}
               {isAdmin && adminView === 'by-person'    && 'Selecciona una persona y toca cualquier día para editar su disponibilidad directamente.'}
               {isAdmin && adminView === 'personal'     && 'Vista de tu propio calendario. Toca un día futuro para marcar tu disponibilidad.'}
               {!isAdmin && 'Toca cualquier día futuro para marcar tu disponibilidad. Puedes elegir día completo, turnos o rango de horas.'}
