@@ -84,6 +84,13 @@ export default function Availability() {
   const [formTo,        setFormTo]     = useState('16:00');
   const [editingUserId, setEditingUserId] = useState(null);
 
+  const [toast, setToast] = useState(null);
+
+  const showToast = (msg, type = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 2500);
+  };
+
   const calendar = useMemo(() => buildCalendar(viewYear, viewMonth), [viewYear, viewMonth]);
 
   const prevMonth = () => {
@@ -140,6 +147,7 @@ export default function Availability() {
 
   const handleSave = () => {
     if (!selectedDay) return;
+    const who = ADMIN_STAFF_LIST.find(s => s.id === editingUserId);
     setAvailData(prev => ({
       ...prev,
       [selectedDay.key]: {
@@ -153,10 +161,12 @@ export default function Availability() {
       }
     }));
     setShowModal(false);
+    showToast(who ? `Disponibilidad guardada para ${who.name}` : 'Disponibilidad guardada');
   };
 
   const handleRemove = () => {
     if (!selectedDay) return;
+    const who = ADMIN_STAFF_LIST.find(s => s.id === editingUserId);
     setAvailData(prev => {
       const updated = { ...prev };
       if (updated[selectedDay.key]) {
@@ -167,6 +177,7 @@ export default function Availability() {
       return updated;
     });
     setShowModal(false);
+    showToast(who ? `Disponibilidad eliminada para ${who.name}` : 'Disponibilidad eliminada', 'warning');
   };
 
   const getChipsConsolidated = (key) => {
@@ -207,7 +218,22 @@ export default function Availability() {
   const editingUser = ADMIN_STAFF_LIST.find(s => s.id === editingUserId);
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
+      {/* Toast de confirmación */}
+      {toast && (
+        <div style={{
+          position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+          background: toast.type === 'warning' ? 'rgba(255,180,0,0.95)' : 'rgba(0,200,80,0.95)',
+          color: toast.type === 'warning' ? '#1a1000' : '#003d14',
+          padding: '10px 20px', borderRadius: 'var(--radius-md)',
+          fontSize: 13, fontWeight: 600, zIndex: 9999,
+          boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+          animation: 'fadeIn 0.2s ease',
+          whiteSpace: 'nowrap',
+        }}>
+          {toast.type === 'warning' ? '✕ ' : '✓ '}{toast.msg}
+        </div>
+      )}
       <div className="page-header">
         <div>
           <h1 className="page-title">◷ Disponibilidad</h1>
