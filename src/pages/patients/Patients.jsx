@@ -18,9 +18,16 @@ export default function Patients() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [filterEvent, setFilterEvent] = useState('all');
 
+  const [formErrors, setFormErrors] = useState({});
+
   const filtered = filterEvent === 'all' ? patients : patients.filter(p => p.eventId === Number(filterEvent));
 
   const handleSave = () => {
+    const errors = {};
+    if (!form.eventId)      errors.eventId = 'Selecciona un evento';
+    if (!form.reason?.trim()) errors.reason = 'Ingresa el motivo';
+    if (Object.keys(errors).length) { setFormErrors(errors); return; }
+    setFormErrors({});
     addPatient({
       ...form,
       date: new Date(),
@@ -39,7 +46,7 @@ export default function Patients() {
           <h1 className="page-title">Fichas de Atención</h1>
           <p className="page-subtitle">{patients.length} atenciones registradas</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+        <button className="btn btn-primary" onClick={() => { setFormErrors({}); setShowModal(true); }}>
           ✚ Nueva Ficha
         </button>
       </div>
@@ -110,10 +117,11 @@ export default function Patients() {
               <div className="form-grid-2">
                 <div className="form-group">
                   <label className="form-label">Evento *</label>
-                  <select className="form-input" value={form.eventId} onChange={e => setForm({...form, eventId: e.target.value})}>
+                  <select className={`form-input ${formErrors.eventId ? 'input-error' : ''}`} value={form.eventId} onChange={e => { setForm({...form, eventId: e.target.value}); setFormErrors(p=>({...p,eventId:''})); }}>
                     <option value="">Seleccionar evento</option>
                     {events.map(ev => <option key={ev.id} value={ev.id}>{ev.name}</option>)}
                   </select>
+                  {formErrors.eventId && <span style={{fontSize:11,color:'var(--red-light)'}}>{formErrors.eventId}</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Nombre (opcional)</label>
@@ -152,7 +160,8 @@ export default function Patients() {
               <div className="ficha-section-title">Atención</div>
               <div className="form-group">
                 <label className="form-label">Motivo de atención *</label>
-                <input className="form-input" value={form.reason} onChange={e => setForm({...form, reason: e.target.value})} placeholder="Ej: Lipotimia, traumatismo, crisis de pánico..." />
+                <input className={`form-input ${formErrors.reason ? 'input-error' : ''}`} value={form.reason} onChange={e => { setForm({...form, reason: e.target.value}); setFormErrors(p=>({...p,reason:''})); }} placeholder="Ej: Lipotimia, traumatismo, crisis de pánico..." />
+                {formErrors.reason && <span style={{fontSize:11,color:'var(--red-light)'}}>{formErrors.reason}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">Tratamiento aplicado</label>
