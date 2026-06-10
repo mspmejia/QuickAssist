@@ -1,0 +1,82 @@
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.company-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: var(--transition);
+}
+
+.company-card--inactive {
+  opacity: 0.55;
+}
+
+.company-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.company-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.company-info { flex: 1; min-width: 0; }
+
+.company-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.company-rubro-badge {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius);
+}
+
+.company-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+  border-top: 1px solid var(--black-border);
+  border-bottom: 1px solid var(--black-border);
+}
+
+.company-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--white-muted);
+}
+
+.company-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.company-actions .btn { flex: 1; justify-content: center; }
+
+@media (max-width: 768px) {
+  .companies-grid { grid-template-columns: 1fr; }
+}
