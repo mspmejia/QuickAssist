@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import './Inventory.css';
 
 const CATEGORY_LABELS = { equipment: 'Equipo', supplies: 'Insumos', meds: 'Medicamentos' };
@@ -20,6 +22,7 @@ export default function Inventory() {
     return 'ok';
   };
 
+  // Recalcula status pero respeta el guardado si fue editado manualmente
   const withStatus = inventory.map(i => ({ ...i, status: getStatus(i) }));
   const filtered = filterCat === 'all' ? withStatus : withStatus.filter(i => i.category === filterCat);
 
@@ -98,6 +101,12 @@ export default function Inventory() {
                 </div>
                 <div style={{ color: 'var(--white-faint)', fontSize: 12 }}>mín: {item.minStock}</div>
               </div>
+              {(item.notes || item.lastReview) && (
+                <div style={{ fontSize: 11, color: 'var(--white-faint)', marginTop: 8, lineHeight: 1.4 }}>
+                  {item.lastReview && <span>Rev: {format(new Date(item.lastReview), 'd MMM', { locale: es })}{item.reviewedBy ? ` · ${item.reviewedBy}` : ''}</span>}
+                  {item.notes && <div style={{ marginTop: 2 }}>{item.notes}</div>}
+                </div>
+              )}
               <div className="inv-card-actions">
                 <button className="btn btn-outline btn-sm" onClick={() => { setAdjustItem(item); setAdjustQty(''); }}>± Ajustar</button>
                 <button className="btn btn-ghost btn-sm" onClick={() => { setSelectedItem(item); setForm({...item, quantity: String(item.quantity), minStock: String(item.minStock)}); setShowModal(true); }}>✎ Editar</button>
@@ -118,6 +127,7 @@ export default function Inventory() {
                 <th>Stock Actual</th>
                 <th>Stock Mínimo</th>
                 <th>Unidad</th>
+                <th>Última revisión</th>
                 <th>Estado</th>
                 <th>Acciones</th>
               </tr>
@@ -125,7 +135,7 @@ export default function Inventory() {
             <tbody>
               {filtered.map(item => (
                 <tr key={item.id}>
-                  <td><strong>{item.name}</strong></td>
+                  <td><strong>{item.name}</strong>{item.notes && <div style={{fontSize:10,color:'var(--white-faint)',marginTop:2}}>{item.notes}</div>}</td>
                   <td><span className="badge badge-gray">{CATEGORY_LABELS[item.category] || item.category}</span></td>
                   <td>
                     <span className={`inv-qty ${item.status === 'critical' ? 'critical' : item.status === 'low' ? 'low' : ''}`}>
@@ -134,6 +144,10 @@ export default function Inventory() {
                   </td>
                   <td style={{color:'var(--white-faint)'}}>{item.minStock}</td>
                   <td style={{color:'var(--white-muted)'}}>{item.unit}</td>
+                  <td style={{fontSize:11,color:'var(--white-faint)'}}>
+                    {item.lastReview ? format(new Date(item.lastReview), 'd MMM', { locale: es }) : '—'}
+                    {item.reviewedBy && <div style={{fontSize:10,marginTop:1}}>{item.reviewedBy}</div>}
+                  </td>
                   <td>
                     <span className={`badge ${item.status === 'critical' ? 'badge-red' : item.status === 'low' ? 'badge-yellow' : 'badge-green'}`}>
                       {item.status === 'critical' ? '⚠ Crítico' : item.status === 'low' ? '↓ Bajo' : '✓ OK'}
