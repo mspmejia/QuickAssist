@@ -160,7 +160,21 @@ export default function Events() {
   const filtered = filterStatus === 'all' ? events : events.filter(e => e.status === filterStatus);
   const sorted = [...filtered].sort((a,b) => new Date(a.date) - new Date(b.date));
 
+  const [formErrors, setFormErrors] = useState({});
+
+  const validateEvent = (f) => {
+    const errors = {};
+    if (!f.name?.trim())   errors.name   = 'Requerido';
+    if (!f.client?.trim()) errors.client = 'Requerido';
+    if (!f.venue?.trim())  errors.venue  = 'Requerido';
+    if (!f.date)           errors.date   = 'Requerido';
+    return errors;
+  };
+
   const handleSave = () => {
+    const errors = validateEvent(form);
+    if (Object.keys(errors).length) { setFormErrors(errors); return; }
+    setFormErrors({});
     if (selectedEvent) {
       updateEvent(selectedEvent.id, { ...form, expectedAttendance: Number(form.expectedAttendance), ambulances: Number(form.ambulances) });
     } else {
@@ -173,6 +187,7 @@ export default function Events() {
 
   const openEdit = (ev) => {
     setSelectedEvent(ev);
+    setFormErrors({});
     setForm({
       ...ev,
       date: ev.date ? format(new Date(ev.date), 'yyyy-MM-dd') : '',
@@ -211,7 +226,7 @@ export default function Events() {
             <button className={`btn btn-ghost btn-sm ${view === 'calendar' ? 'active' : ''}`} onClick={() => setView('calendar')}>◈ Calendario</button>
           </div>
           {canEdit && (
-            <button className="btn btn-primary" onClick={() => { setSelectedEvent(null); setForm(EMPTY_FORM); setShowModal(true); }}>
+            <button className="btn btn-primary" onClick={() => { setSelectedEvent(null); setForm(EMPTY_FORM); setFormErrors({}); setShowModal(true); }}>
               + Nuevo Evento
             </button>
           )}
@@ -229,7 +244,7 @@ export default function Events() {
       {view === 'list' ? (
         <div className="events-list">
           {sorted.map(ev => (
-            <div key={ev.id} className="event-card card">
+            <div key={ev.id} className={`event-card card ${ev.status === 'completed' ? 'event-card--completed' : ev.status === 'cancelled' ? 'event-card--cancelled' : ''}`}>
               <div className="event-card-top">
                 <div className="event-card-left">
                   <div className="event-date-badge">
@@ -285,15 +300,18 @@ export default function Events() {
               <div className="form-grid-2">
                 <div className="form-group">
                   <label className="form-label">Nombre del Evento *</label>
-                  <input className="form-input" value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Nombre del evento" />
+                  <input className={`form-input ${formErrors.name ? 'input-error' : ''}`} value={form.name} onChange={e => { setForm({...form, name: e.target.value}); setFormErrors(p=>({...p,name:''})); }} placeholder="Nombre del evento" />
+                  {formErrors.name && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Cliente *</label>
-                  <input className="form-input" value={form.client} onChange={e => setForm({...form, client: e.target.value})} placeholder="Nombre del cliente" />
+                  <input className={`form-input ${formErrors.client ? 'input-error' : ''}`} value={form.client} onChange={e => { setForm({...form, client: e.target.value}); setFormErrors(p=>({...p,client:''})); }} placeholder="Nombre del cliente" />
+                  {formErrors.client && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Sede / Venue *</label>
-                  <input className="form-input" value={form.venue} onChange={e => setForm({...form, venue: e.target.value})} placeholder="Lugar del evento" />
+                  <input className={`form-input ${formErrors.venue ? 'input-error' : ''}`} value={form.venue} onChange={e => { setForm({...form, venue: e.target.value}); setFormErrors(p=>({...p,venue:''})); }} placeholder="Lugar del evento" />
+                  {formErrors.venue && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Tipo</label>
@@ -307,7 +325,8 @@ export default function Events() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Fecha del Evento *</label>
-                  <input className="form-input" type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})} />
+                  <input className={`form-input ${formErrors.date ? 'input-error' : ''}`} type="date" value={form.date} onChange={e => { setForm({...form, date: e.target.value}); setFormErrors(p=>({...p,date:''})); }} />
+                  {formErrors.date && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Estado</label>
