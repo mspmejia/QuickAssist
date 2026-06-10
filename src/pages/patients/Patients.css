@@ -92,3 +92,57 @@
 @media (max-width: 480px) {
   .vitals-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Tipo de paciente ────────────────────────────────────── */
+.patient-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.patient-type-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--black-border);
+  background: var(--black-soft);
+  color: var(--white-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+}
+
+.patient-type-btn:hover { border-color: var(--white-faint); color: var(--white); }
+
+.patient-type-btn--active {
+  border-color: var(--red);
+  background: rgba(204,0,0,0.1);
+  color: var(--white);
+}
+
+.patient-type-icon { font-size: 20px; flex-shrink: 0; }
+
+/* ── Insumos consumidos ──────────────────────────────────── */
+.consumed-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.consumed-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .patient-type-grid { grid-template-columns: 1fr; }
+  .consumed-item-row { flex-wrap: wrap; }
+}
