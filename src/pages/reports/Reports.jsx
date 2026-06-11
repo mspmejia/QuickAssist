@@ -36,11 +36,11 @@ const loadJsPDF = () => new Promise((resolve, reject) => {
 // Cabecera común para todos los PDFs
 const pdfHeader = (doc, title, subtitle) => {
   const w = doc.internal.pageSize.getWidth();
-  doc.setFillColor(20, 20, 20);
+  doc.setFillColor(245, 245, 245);
   doc.rect(0, 0, w, 28, 'F');
   doc.setFillColor(204, 0, 0);
   doc.rect(0, 0, 4, 28, 'F');
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(30, 30, 30);
   doc.setFontSize(14); doc.setFont('helvetica', 'bold');
   doc.text('QUICK ASSIST', 12, 11);
   doc.setFontSize(8);  doc.setFont('helvetica', 'normal');
@@ -62,9 +62,9 @@ const pdfTable = (doc, headers, rows, startY) => {
   const colW = (w - 20) / headers.length;
   let y = startY;
   // encabezado
-  doc.setFillColor(30, 30, 30);
+  doc.setFillColor(230, 230, 230);
   doc.rect(10, y, w - 20, 8, 'F');
-  doc.setTextColor(170, 170, 170);
+  doc.setTextColor(60, 60, 60);
   doc.setFontSize(7); doc.setFont('helvetica', 'bold');
   headers.forEach((h, i) => doc.text(h, 12 + i * colW, y + 5.5));
   y += 8;
@@ -76,8 +76,8 @@ const pdfTable = (doc, headers, rows, startY) => {
       pdfHeader(doc, '', '');
       y = 38;
     }
-    if (ri % 2 === 0) { doc.setFillColor(26, 26, 26); doc.rect(10, y, w - 20, 7, 'F'); }
-    doc.setTextColor(220, 220, 220);
+    if (ri % 2 === 0) { doc.setFillColor(248, 248, 248); doc.rect(10, y, w - 20, 7, 'F'); }
+    doc.setTextColor(40, 40, 40);
     row.forEach((cell, i) => {
       const txt = String(cell ?? '—');
       doc.text(txt.length > 28 ? txt.substring(0, 26) + '…' : txt, 12 + i * colW, y + 5);
@@ -94,7 +94,7 @@ const pdfFooter = (doc, extra = '') => {
   doc.setDrawColor(50, 50, 50);
   doc.setLineWidth(0.3);
   doc.line(10, h - 12, w - 10, h - 12);
-  doc.setTextColor(100, 100, 100);
+  doc.setTextColor(130, 130, 130);
   doc.setFontSize(7);
   doc.text('QuickAssist — Documento confidencial', 10, h - 7);
   if (extra) doc.text(extra, w / 2, h - 7, { align: 'center' });
@@ -111,17 +111,17 @@ const generateEventReport = async (eventId, events, patients, personnel, compani
   const ev = events.find(e => e.id === eventId);
   if (!ev) return;
   const doc = new JsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  doc.setFillColor(10, 10, 10);
+  doc.setFillColor(255, 255, 255);
   doc.rect(0, 0, 210, 297, 'F');
 
   pdfHeader(doc, 'REPORTE DE EVENTO', ev.name.toUpperCase());
 
   let y = 38;
   // Info del evento
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(30, 30, 30);
   doc.setFontSize(9); doc.setFont('helvetica', 'bold');
   doc.text('Información del evento', 10, y); y += 6;
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(180, 180, 180);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(80, 80, 80);
   const evInfo = [
     ['Cliente', ev.client],
     ['Venue', ev.venue],
@@ -131,8 +131,8 @@ const generateEventReport = async (eventId, events, patients, personnel, compani
     ['Estado', ev.status === 'confirmed' ? 'Confirmado' : ev.status === 'completed' ? 'Completado' : ev.status],
   ];
   evInfo.forEach(([k, v]) => {
-    doc.setTextColor(120, 120, 120); doc.text(k + ':', 12, y);
-    doc.setTextColor(220, 220, 220); doc.text(String(v || '—'), 60, y);
+    doc.setTextColor(110, 110, 110); doc.text(k + ':', 12, y);
+    doc.setTextColor(30, 30, 30); doc.text(String(v || '—'), 60, y);
     y += 5;
   });
   y += 4;
@@ -155,17 +155,17 @@ const generateEventReport = async (eventId, events, patients, personnel, compani
   ];
   kpis.forEach(([lbl, val], i) => {
     const x = 12 + i * 48;
-    doc.setFillColor(30, 30, 30); doc.rect(x, y, 44, 14, 'F');
+    doc.setFillColor(250, 250, 250); doc.rect(x, y, 44, 14, 'F');
     doc.setTextColor(204, 0, 0); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
     doc.text(String(val), x + 22, y + 8, { align: 'center' });
-    doc.setTextColor(120, 120, 120); doc.setFontSize(7); doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 100, 100); doc.setFontSize(7); doc.setFont('helvetica', 'normal');
     doc.text(lbl, x + 22, y + 13, { align: 'center' });
   });
   y += 20;
 
   // Tabla de fichas
   if (evPatients.length > 0) {
-    doc.setTextColor(255, 255, 255); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 30, 30); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
     doc.text('Fichas de atención', 10, y); y += 5;
     y = pdfTable(doc,
       ['Folio', 'Tipo', 'Empresa', 'Motivo', 'Atendido por', 'Traslado'],
@@ -189,7 +189,7 @@ const generateEventReport = async (eventId, events, patients, personnel, compani
   });
   if (Object.keys(byCompany).length > 0) {
     y += 4;
-    doc.setTextColor(255, 255, 255); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 30, 30); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
     doc.text('Atenciones por empresa colaboradora', 10, y); y += 5;
     y = pdfTable(doc,
       ['Empresa', 'Atenciones'],
@@ -208,7 +208,7 @@ const generateCompanyReport = async (companyId, companies, patients, events, dat
   const company = companies.find(c => c.id === companyId);
   if (!company) return;
   const doc = new JsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  doc.setFillColor(10, 10, 10);
+  doc.setFillColor(255, 255, 255);
   doc.rect(0, 0, 210, 297, 'F');
 
   pdfHeader(doc, 'REPORTE DE EMPRESA COLABORADORA', company.name.toUpperCase());
@@ -222,7 +222,7 @@ const generateCompanyReport = async (companyId, companies, patients, events, dat
     isWithinInterval(new Date(p.date), { start: from, end: to })
   );
 
-  doc.setTextColor(180, 180, 180); doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 80, 80); doc.setFontSize(8); doc.setFont('helvetica', 'normal');
   doc.text(`Empresa: ${company.name}  |  Rubro: ${company.rubro}  |  Período: ${format(from,'d MMM yyyy',{locale:es})} – ${format(to,'d MMM yyyy',{locale:es})}`, 10, y); y += 8;
 
   // KPIs
@@ -233,16 +233,16 @@ const generateCompanyReport = async (companyId, companies, patients, events, dat
   ];
   kpis.forEach(([lbl, val], i) => {
     const x = 12 + i * 62;
-    doc.setFillColor(30,30,30); doc.rect(x, y, 58, 14, 'F');
+    doc.setFillColor(250,250,250); doc.rect(x, y, 58, 14, 'F');
     doc.setTextColor(204,0,0); doc.setFontSize(14); doc.setFont('helvetica','bold');
     doc.text(String(val), x+29, y+8, { align:'center' });
-    doc.setTextColor(120,120,120); doc.setFontSize(7); doc.setFont('helvetica','normal');
+    doc.setTextColor(100,100,100); doc.setFontSize(7); doc.setFont('helvetica','normal');
     doc.text(lbl, x+29, y+13, { align:'center' });
   });
   y += 20;
 
   if (compPatients.length > 0) {
-    doc.setTextColor(255,255,255); doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(30,30,30); doc.setFontSize(9); doc.setFont('helvetica','bold');
     doc.text('Detalle de atenciones', 10, y); y += 5;
     y = pdfTable(doc,
       ['Folio','Evento','Fecha','Puesto','Motivo','Traslado','Desenlace'],
@@ -258,7 +258,7 @@ const generateCompanyReport = async (companyId, companies, patients, events, dat
       y
     );
   } else {
-    doc.setTextColor(120,120,120); doc.setFontSize(9);
+    doc.setTextColor(100,100,100); doc.setFontSize(9);
     doc.text('Sin atenciones registradas en el período seleccionado.', 10, y);
   }
 
@@ -270,7 +270,7 @@ const generateCompanyReport = async (companyId, companies, patients, events, dat
 const generateInventoryReport = async (eventId, events, patients, inventory, units, despachos) => {
   const JsPDF = await loadJsPDF();
   const doc = new JsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  doc.setFillColor(10,10,10); doc.rect(0,0,210,297,'F');
+  doc.setFillColor(255,255,255); doc.rect(0,0,210,297,'F');
 
   const ev = eventId ? events.find(e => e.id === eventId) : null;
   pdfHeader(doc, 'REPORTE DE CONSUMO DE INVENTARIO', ev ? ev.name.toUpperCase() : 'TODOS LOS EVENTOS');
@@ -292,10 +292,10 @@ const generateInventoryReport = async (eventId, events, patients, inventory, uni
     });
 
   if (rows.length === 0) {
-    doc.setTextColor(120,120,120); doc.setFontSize(9);
+    doc.setTextColor(100,100,100); doc.setFontSize(9);
     doc.text('Sin consumos registrados para el período/evento seleccionado.', 10, y);
   } else {
-    doc.setTextColor(255,255,255); doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(30,30,30); doc.setFontSize(9); doc.setFont('helvetica','bold');
     doc.text('Artículos consumidos', 10, y); y += 5;
     y = pdfTable(doc,
       ['Artículo','Categoría','Consumido','Unidad','Stock actual'],
@@ -325,7 +325,7 @@ const generateInventoryReport = async (eventId, events, patients, inventory, uni
 const generateMonthlyReport = async (year, month, events, patients, personnel, companies, inventory) => {
   const JsPDF = await loadJsPDF();
   const doc = new JsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  doc.setFillColor(10,10,10); doc.rect(0,0,210,297,'F');
+  doc.setFillColor(255,255,255); doc.rect(0,0,210,297,'F');
 
   const mStart = startOfMonth(new Date(year, month));
   const mEnd   = endOfMonth(new Date(year, month));
@@ -353,17 +353,17 @@ const generateMonthlyReport = async (year, month, events, patients, personnel, c
     const row = Math.floor(i / 3);
     const x   = 12 + col * 62;
     const ky  = y + row * 18;
-    doc.setFillColor(30,30,30); doc.rect(x, ky, 58, 14, 'F');
+    doc.setFillColor(250,250,250); doc.rect(x, ky, 58, 14, 'F');
     doc.setTextColor(204,0,0); doc.setFontSize(14); doc.setFont('helvetica','bold');
     doc.text(String(val), x+29, ky+8, {align:'center'});
-    doc.setTextColor(120,120,120); doc.setFontSize(7); doc.setFont('helvetica','normal');
+    doc.setTextColor(100,100,100); doc.setFontSize(7); doc.setFont('helvetica','normal');
     doc.text(lbl, x+29, ky+13, {align:'center'});
   });
   y += 40;
 
   // Eventos del mes
   if (monthEvents.length > 0) {
-    doc.setTextColor(255,255,255); doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(30,30,30); doc.setFontSize(9); doc.setFont('helvetica','bold');
     doc.text('Eventos del mes', 10, y); y += 5;
     y = pdfTable(doc,
       ['Evento','Cliente','Fecha','Asistentes','Estado'],
@@ -383,7 +383,7 @@ const generateMonthlyReport = async (year, month, events, patients, personnel, c
   const topReasons = Object.entries(reasonMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
   if (topReasons.length > 0) {
     y += 4;
-    doc.setTextColor(255,255,255); doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(30,30,30); doc.setFontSize(9); doc.setFont('helvetica','bold');
     doc.text('Motivos de atención más frecuentes', 10, y); y += 5;
     y = pdfTable(doc, ['Motivo','Atenciones'], topReasons.map(([r,c])=>[r,c]), y);
   }
@@ -397,7 +397,7 @@ const generateMonthlyReport = async (year, month, events, patients, personnel, c
   const topComp = Object.entries(compMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
   if (topComp.length > 0) {
     y += 4;
-    doc.setTextColor(255,255,255); doc.setFontSize(9); doc.setFont('helvetica','bold');
+    doc.setTextColor(30,30,30); doc.setFontSize(9); doc.setFont('helvetica','bold');
     doc.text('Atenciones por empresa colaboradora', 10, y); y += 5;
     y = pdfTable(doc, ['Empresa','Atenciones'], topComp.map(([n,c])=>[n,c]), y);
   }
