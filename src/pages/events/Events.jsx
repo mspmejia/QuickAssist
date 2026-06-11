@@ -300,22 +300,22 @@ export default function Events() {
               <div className="form-grid-2">
                 <div className="form-group">
                   <label className="form-label">Nombre del Evento *</label>
-                  <input className={`form-input ${formErrors.name ? 'input-error' : ''}`} value={form.name} onChange={e => { setForm({...form, name: e.target.value}); setFormErrors(p=>({...p,name:''})); }} placeholder="Nombre del evento" />
+                  <input className={`form-input ${formErrors.name ? 'input-error' : ''}`} value={form.name} onChange={e => { const v=e.target.value; setForm(p=>({...p,name:v})); setFormErrors(p=>({...p,name:''})); }} placeholder="Nombre del evento" />
                   {formErrors.name && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Cliente *</label>
-                  <input className={`form-input ${formErrors.client ? 'input-error' : ''}`} value={form.client} onChange={e => { setForm({...form, client: e.target.value}); setFormErrors(p=>({...p,client:''})); }} placeholder="Nombre del cliente" />
+                  <input className={`form-input ${formErrors.client ? 'input-error' : ''}`} value={form.client} onChange={e => { const v=e.target.value; setForm(p=>({...p,client:v})); setFormErrors(p=>({...p,client:''})); }} placeholder="Nombre del cliente" />
                   {formErrors.client && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Sede / Venue *</label>
-                  <input className={`form-input ${formErrors.venue ? 'input-error' : ''}`} value={form.venue} onChange={e => { setForm({...form, venue: e.target.value}); setFormErrors(p=>({...p,venue:''})); }} placeholder="Lugar del evento" />
+                  <input className={`form-input ${formErrors.venue ? 'input-error' : ''}`} value={form.venue} onChange={e => { const v=e.target.value; setForm(p=>({...p,venue:v})); setFormErrors(p=>({...p,venue:''})); }} placeholder="Lugar del evento" />
                   {formErrors.venue && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Tipo</label>
-                  <select className="form-input" value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
+                  <select className="form-input" value={form.type} onChange={e => { const v=e.target.value; setForm(p=>({...p,type:v})); }}>
                     <option value="concert">Concierto</option>
                     <option value="sports">Deportes</option>
                     <option value="forum">Foro</option>
@@ -325,12 +325,12 @@ export default function Events() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Fecha del Evento *</label>
-                  <input className={`form-input ${formErrors.date ? 'input-error' : ''}`} type="date" value={form.date} onChange={e => { setForm({...form, date: e.target.value}); setFormErrors(p=>({...p,date:''})); }} />
+                  <input className={`form-input ${formErrors.date ? 'input-error' : ''}`} type="date" value={form.date} onChange={e => { const v=e.target.value; setForm(p=>({...p,date:v})); setFormErrors(p=>({...p,date:''})); }} />
                   {formErrors.date && <span style={{fontSize:11,color:'var(--red-light)'}}>Campo requerido</span>}
                 </div>
                 <div className="form-group">
                   <label className="form-label">Estado</label>
-                  <select className="form-input" value={form.status} onChange={e => setForm({...form, status: e.target.value})}>
+                  <select className="form-input" value={form.status} onChange={e => { const v=e.target.value; setForm(p=>({...p,status:v})); }}>
                     <option value="pending">Pendiente</option>
                     <option value="confirmed">Confirmado</option>
                     <option value="completed">Completado</option>
@@ -339,24 +339,24 @@ export default function Events() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Fecha de Montaje</label>
-                  <input className="form-input" type="date" value={form.setupDate} onChange={e => setForm({...form, setupDate: e.target.value})} />
+                  <input className="form-input" type="date" value={form.setupDate} onChange={e => { const v=e.target.value; setForm(p=>({...p,setupDate:v})); }} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Fecha de Desmontaje</label>
-                  <input className="form-input" type="date" value={form.teardownDate} onChange={e => setForm({...form, teardownDate: e.target.value})} />
+                  <input className="form-input" type="date" value={form.teardownDate} onChange={e => { const v=e.target.value; setForm(p=>({...p,teardownDate:v})); }} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Asistentes Esperados</label>
-                  <input className="form-input" type="number" value={form.expectedAttendance} onChange={e => setForm({...form, expectedAttendance: e.target.value})} placeholder="0" />
+                  <input className="form-input" type="number" value={form.expectedAttendance} onChange={e => { const v=e.target.value; setForm(p=>({...p,expectedAttendance:v})); }} placeholder="0" />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Ambulancias Requeridas</label>
-                  <input className="form-input" type="number" min="1" value={form.ambulances} onChange={e => setForm({...form, ambulances: e.target.value})} />
+                  <input className="form-input" type="number" min="1" value={form.ambulances} onChange={e => { const v=e.target.value; setForm(p=>({...p,ambulances:v})); }} />
                 </div>
               </div>
               <div className="form-group">
                 <label className="form-label">Notas</label>
-                <textarea className="form-input" rows={3} value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} placeholder="Indicaciones especiales, requerimientos..." />
+                <textarea className="form-input" rows={3} value={form.notes} onChange={e => { const v=e.target.value; setForm(p=>({...p,notes:v})); }} placeholder="Indicaciones especiales, requerimientos..." />
               </div>
             </div>
             <div className="modal-footer">
