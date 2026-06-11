@@ -71,7 +71,7 @@ function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAs
 
       {/* Fechas del evento */}
       <div className="suggest-dates">
-        {eventKey    && <span className="suggest-date-chip">🎪 Evento: {format(new Date(event.date), 'd MMM', { locale: es })}</span>}
+        {eventKey    && event.date     && <span className="suggest-date-chip">🎪 Evento: {format(new Date(event.date), 'd MMM', { locale: es })}</span>}
         {setupKey    && event.setupDate    && <span className="suggest-date-chip">▲ Montaje: {format(new Date(event.setupDate), 'd MMM', { locale: es })}</span>}
         {teardownKey && event.teardownDate && <span className="suggest-date-chip">▼ Desmontaje: {format(new Date(event.teardownDate), 'd MMM', { locale: es })}</span>}
       </div>
@@ -155,7 +155,7 @@ function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAs
 // ── Componente principal ──────────────────────────────────
 export default function Events() {
   const { events, addEvent, updateEvent, personnel, availData } = useApp();
-  const { hasRole } = useAuth();
+  const { user, hasRole } = useAuth();
   const [view, setView] = useState('list');
   const [showModal, setShowModal] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
@@ -165,10 +165,14 @@ export default function Events() {
   const [enrollTab, setEnrollTab] = useState('event');
   const [assignTab, setAssignTab] = useState('suggestions'); // 'suggestions' | 'all'
 
-  const canEdit = hasRole('admin');
+  const canEdit = hasRole('admin') || user?.role === 'admin';
 
   const filtered = filterStatus === 'all' ? events : events.filter(e => e.status === filterStatus);
-  const sorted = [...filtered].sort((a,b) => new Date(a.date) - new Date(b.date));
+  const sorted = [...filtered].sort((a,b) => {
+    const da = a.date ? new Date(a.date) : new Date(0);
+    const db = b.date ? new Date(b.date) : new Date(0);
+    return da - db;
+  });
 
   const [formErrors, setFormErrors] = useState({});
 
@@ -270,8 +274,8 @@ export default function Events() {
               <div className="event-card-top">
                 <div className="event-card-left">
                   <div className="event-date-badge">
-                    <span className="edb-day">{format(new Date(ev.date), 'd')}</span>
-                    <span className="edb-month">{format(new Date(ev.date), 'MMM', { locale: es })}</span>
+                    <span className="edb-day">{ev.date ? format(new Date(ev.date), 'd') : '—'}</span>
+                    <span className="edb-month">{ev.date ? format(new Date(ev.date), 'MMM', { locale: es }) : '—'}</span>
                   </div>
                   <div>
                     <h3 className="event-name">{ev.name}</h3>
@@ -297,8 +301,7 @@ export default function Events() {
                 <div className="event-detail"><span>🚑</span>{ev.ambulances} ambulancia(s)</div>
                 <div className="event-detail"><span>◉</span>{ev.assignedPersonnel?.length || 0} personal asignado</div>
                 <div className="event-detail"><span>📅</span>Montaje: {ev.setupDate ? format(new Date(ev.setupDate), 'd MMM', { locale: es }) : 'N/D'}</div>
-                <div className="event-detail"><span>📅</span>Desmontaje: {ev.teardownDate ? format(new Date(ev.teardownDate), 'd MMM', { locale: es }) : 'N/D'}</div>
-              </div>
+                <div className="event-detail"><span>📅</span>Desmontaje: {ev.teardownDate ? format(new Date(ev.teardownDate), 'd MMM', { locale: es }) : 'N/D'}</div>              </div>
               {ev.notes && <div className="event-notes">📝 {ev.notes}</div>}
             </div>
           ))}
