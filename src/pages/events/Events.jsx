@@ -132,10 +132,20 @@ function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAs
             {staffMember.avatar}
           </div>
           <div className="suggest-info">
-            <div className="suggest-name" style={{ opacity: 0.5 }}>{staffMember.name}</div>
-            <div style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[staffMember.role]}</div>
+            <div className="suggest-name" style={{ opacity: 0.7 }}>{staffMember.name}</div>
+            <div style={{ fontSize: 10, color: 'var(--white-faint)' }}>{ROLE_LABELS[staffMember.role]} · Sin disponibilidad marcada</div>
           </div>
-          <span className="badge badge-gray" style={{ fontSize: 10 }}>No registrado</span>
+          <div className="suggest-actions">
+            {isAssigned ? (
+              <span className="badge badge-green" style={{ fontSize: 10 }}>✓ Asignado</span>
+            ) : personnelRecord ? (
+              <button className="btn btn-outline btn-sm" onClick={() => onAssign(personnelRecord.id)}>
+                + Asignar
+              </button>
+            ) : (
+              <span className="badge badge-gray" style={{ fontSize: 10 }}>Solo app</span>
+            )}
+          </div>
         </div>
       ))}
     </div>
@@ -199,11 +209,23 @@ export default function Events() {
 
   const assignPersonnel = (eventId, personId) => {
     const ev = events.find(e => e.id === eventId);
+    if (!ev) return;
     const already = ev.assignedPersonnel.includes(personId);
     updateEvent(eventId, {
       assignedPersonnel: already
         ? ev.assignedPersonnel.filter(id => id !== personId)
         : [...ev.assignedPersonnel, personId],
+    });
+    // Actualizar selectedEvent localmente para que el modal refleje el cambio inmediato
+    setSelectedEvent(prev => {
+      if (!prev || prev.id !== eventId) return prev;
+      const alr = prev.assignedPersonnel.includes(personId);
+      return {
+        ...prev,
+        assignedPersonnel: alr
+          ? prev.assignedPersonnel.filter(id => id !== personId)
+          : [...prev.assignedPersonnel, personId],
+      };
     });
   };
 
@@ -420,20 +442,18 @@ export default function Events() {
                   <div className="assign-list">
                     {personnel.map(p => {
                       const assigned = selectedEvent.assignedPersonnel?.includes(p.id);
-                      // Verificar disponibilidad del personal en la fecha correspondiente
                       const dateForTab = enrollTab === 'event' ? selectedEvent.date : enrollTab === 'setup' ? selectedEvent.setupDate : selectedEvent.teardownDate;
                       const dk = toDateKey(dateForTab);
-                      // Buscar staffMember por nombre para cruzar con availData
-                      const staffMatch = ALL_STAFF.find(s => s.name === p.name);
-                      const hasAvail = staffMatch && dk ? isAvailableOn(availData, staffMatch.id, dk) : false;
+                      // Cruce por ID directo — personnel.id coincide con ADMIN_STAFF_LIST id
+                      const hasAvail = dk ? isAvailableOn(availData, p.id, dk) : false;
                       return (
                         <div key={p.id} className={`assign-row ${assigned ? 'assigned' : ''}`} onClick={() => assignPersonnel(selectedEvent.id, p.id)}>
                           <div className="assign-checkbox">{assigned ? '✓' : ''}</div>
                           <div className="assign-name">{p.name}</div>
-                          <div className="assign-role text-muted">{p.role === 'paramedic' ? 'Paramédico' : 'Piloto'}</div>
+                          <div className="assign-role text-muted">{p.role === 'paramedic' ? 'Paramédico' : p.role === 'pilot' ? 'Piloto' : 'Médico'}</div>
                           {hasAvail && <span className="suggest-avail-tag" style={{ fontSize: 10 }}>Disponible</span>}
-                          <span className={`badge ${p.status === 'available' ? 'badge-green' : 'badge-yellow'}`}>
-                            {p.status === 'available' ? 'Disponible' : 'Asignado'}
+                          <span className={`badge ${p.status === 'available' ? 'badge-green' : p.status === 'assigned' ? 'badge-yellow' : 'badge-gray'}`}>
+                            {p.status === 'available' ? 'Disponible' : p.status === 'assigned' ? 'Asignado' : 'Inactivo'}
                           </span>
                         </div>
                       );
