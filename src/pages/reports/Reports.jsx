@@ -531,8 +531,8 @@ export default function Reports() {
             <div className="generator-header">
               <div className="generator-icon" style={{ background: 'rgba(255,180,0,0.15)', color: '#FFB400' }}>◉</div>
               <div>
-                <div class="generator-title">Reporte por empresa colaboradora</div>
-                <div class="generator-desc">Todas las atenciones de una empresa en un rango de fechas. Para entregar a la empresa sobre sus colaboradores atendidos.</div>
+                <div className="generator-title">Reporte por empresa colaboradora</div>
+                <div className="generator-desc">Todas las atenciones de una empresa en un rango de fechas. Para entregar a la empresa sobre sus colaboradores atendidos.</div>
               </div>
             </div>
             <div className="generator-controls" style={{ flexWrap: 'wrap', gap: 10 }}>
