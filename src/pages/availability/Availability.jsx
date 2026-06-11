@@ -436,6 +436,7 @@ export default function Availability() {
 
             {/* Form de disponibilidad — solo visible si hay persona seleccionada */}
             {(!isAdmin || adminView !== 'consolidated' || editingUserId !== null) && (
+            <React.Fragment>
             <div className="form-group">
               <label className="form-label">Tipo de disponibilidad</label>
               <div className="avail-type-grid">
@@ -491,6 +492,7 @@ export default function Availability() {
                 Guardar
               </button>
             </div>
+            </React.Fragment>
             )}
           </div>
         </div>
