@@ -5,7 +5,7 @@ import { es } from 'date-fns/locale';
 import './Units.css';
 
 const TIPO_LABELS = { basica: 'Básica', avanzada: 'Avanzada', bodega: 'Bodega Central' };
-const TIPO_COLORS = { basica: '#0088FF', avanzada: '#CC0000', bodega: '#FFB400' };
+const TIPO_COLORS = { basica: '#0088FF', avanzada: '#CC0000', bodega: '#B87800' };
 
 const CATEGORY_LABELS = { equipment: 'Equipo', supplies: 'Insumos', meds: 'Medicamentos' };
 

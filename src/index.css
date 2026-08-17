@@ -1,25 +1,36 @@
+/* Tipografía institucional Quick Assist: Montserrat (títulos) + Poppins (cuerpo) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap');
+
 :root {
-  --red: #CC0000;
-  --red-dark: #990000;
-  --red-light: #FF1A1A;
-  --black: #0A0A0A;
-  --black-soft: #141414;
-  --black-card: #1A1A1A;
-  --black-border: #2A2A2A;
-  --white: #FFFFFF;
-  --white-soft: #F5F5F5;
-  --white-muted: #AAAAAA;
-  --white-faint: #666666;
+  /* Rojos institucionales (tomados de quickassistgt.com) */
+  --red: #CB0418;
+  --red-dark: #900000;
+  --red-deep: #5A0C0C;
+  --red-light: #E8323E;
 
-  --font-display: 'Barlow Condensed', sans-serif;
-  --font-body: 'Barlow', sans-serif;
+  /* Fondo blanco + gris cemento (identidad Quick Assist) */
+  --black: #FAFAF8;          /* fondo principal de la app: blanco cálido, no #FFF puro */
+  --black-soft: #F1EFEC;     /* fondo de secciones / header móvil: gris cemento claro */
+  --black-card: #FFFFFF;     /* tarjetas: blanco puro sobre el fondo cemento */
+  --black-border: #DEDAD4;   /* bordes: gris cemento */
 
-  --radius: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Texto: gris cemento oscuro en vez de negro puro */
+  --white: #2B2A28;          /* texto principal */
+  --white-soft: #3A3835;
+  --white-muted: #6E6B65;    /* texto secundario */
+  --white-faint: #9C988F;    /* texto terciario */
 
-  --shadow: 0 2px 12px rgba(0,0,0,0.4);
-  --shadow-red: 0 4px 20px rgba(204,0,0,0.3);
+  --accent: var(--red);
+
+  --font-display: 'Montserrat', 'Barlow Condensed', sans-serif;
+  --font-body: 'Poppins', 'Barlow', sans-serif;
+
+  --radius: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow: 0 4px 20px rgba(43,42,40,0.08);
+  --shadow-red: 0 8px 24px rgba(203,4,24,0.22);
 
   --transition: all 0.2s ease;
   --sidebar-width: 240px;
@@ -31,7 +42,7 @@ html { font-size: 16px; }
 
 body {
   font-family: var(--font-body);
-  background: var(--black);
+  background: var(--black-soft);
   color: var(--white);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -57,6 +68,11 @@ input, textarea, select {
 ::-webkit-scrollbar-thumb { background: var(--black-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--red); }
 
+/* Curva de sección tipo quickassistgt.com: separa bloques con un borde suave en vez del degradado oscuro genérico */
+.section-curve {
+  border-radius: 0 0 40px 40px;
+}
+
 /* UTILITIES */
 .text-red { color: var(--red); }
 .text-muted { color: var(--white-muted); }
@@ -73,10 +89,10 @@ input, textarea, select {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
-.badge-red { background: rgba(204,0,0,0.2); color: var(--red-light); border: 1px solid rgba(204,0,0,0.3); }
-.badge-green { background: rgba(0,200,80,0.15); color: #00C850; border: 1px solid rgba(0,200,80,0.25); }
-.badge-yellow { background: rgba(255,180,0,0.15); color: #FFB400; border: 1px solid rgba(255,180,0,0.25); }
-.badge-gray { background: rgba(255,255,255,0.08); color: var(--white-muted); border: 1px solid rgba(255,255,255,0.1); }
+.badge-red { background: rgba(203,4,24,0.08); color: var(--red-dark); border: 1px solid rgba(203,4,24,0.25); }
+.badge-green { background: rgba(11,138,64,0.08); color: #0B8A40; border: 1px solid rgba(11,138,64,0.25); }
+.badge-yellow { background: rgba(184,120,0,0.08); color: #B87800; border: 1px solid rgba(184,120,0,0.25); }
+.badge-gray { background: rgba(43,42,40,0.05); color: var(--white-muted); border: 1px solid rgba(43,42,40,0.1); }
 
 /* CARD */
 .card {
@@ -84,6 +100,7 @@ input, textarea, select {
   border: 1px solid var(--black-border);
   border-radius: var(--radius-md);
   padding: 20px;
+  box-shadow: var(--shadow);
 }
 
 /* FORM */
@@ -98,7 +115,7 @@ input, textarea, select {
   font-size: 14px;
   transition: var(--transition);
 }
-.form-input:focus { border-color: var(--red); box-shadow: 0 0 0 2px rgba(204,0,0,0.15); }
+.form-input:focus { border-color: var(--red); box-shadow: 0 0 0 2px rgba(203,4,24,0.12); }
 .form-input::placeholder { color: var(--white-faint); }
 
 /* BUTTONS */
@@ -168,7 +185,7 @@ th {
   color: var(--white-muted);
 }
 td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--black-border); }
-tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody tr:hover { background: rgba(43,42,40,0.025); }
 
 /* ANIMATIONS */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

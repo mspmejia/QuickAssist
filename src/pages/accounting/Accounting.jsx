@@ -49,21 +49,21 @@ export default function Accounting() {
       </div>
 
       <div className="acc-stats">
-        <div className="acc-stat card" style={{'--border': '#00C850'}}>
+        <div className="acc-stat card" style={{'--border': '#0B8A40'}}>
           <span className="acc-stat-label">Ingresos (pagados)</span>
           <span className="acc-stat-value income">{fmtMoney(totalIncome)}</span>
         </div>
-        <div className="acc-stat card" style={{'--border': '#FF4444'}}>
+        <div className="acc-stat card" style={{'--border': '#A80000'}}>
           <span className="acc-stat-label">Egresos (pagados)</span>
           <span className="acc-stat-value expense">{fmtMoney(totalExpense)}</span>
         </div>
-        <div className="acc-stat card" style={{'--border': balance >= 0 ? '#00C850' : '#FF4444'}}>
+        <div className="acc-stat card" style={{'--border': balance >= 0 ? '#0B8A40' : '#A80000'}}>
           <span className="acc-stat-label">Balance neto</span>
-          <span className="acc-stat-value" style={{color: balance >= 0 ? '#00C850' : '#FF4444'}}>{fmtMoney(balance)}</span>
+          <span className="acc-stat-value" style={{color: balance >= 0 ? '#0B8A40' : '#A80000'}}>{fmtMoney(balance)}</span>
         </div>
-        <div className="acc-stat card" style={{'--border': '#FFB400'}}>
+        <div className="acc-stat card" style={{'--border': '#B87800'}}>
           <span className="acc-stat-label">Por cobrar / pagar</span>
-          <span className="acc-stat-value" style={{color:'#FFB400'}}>{fmtMoney(pending)}</span>
+          <span className="acc-stat-value" style={{color:'#B87800'}}>{fmtMoney(pending)}</span>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ export default function Accounting() {
                     </span>
                   </td>
                   <td>
-                    <strong style={{ color: t.type === 'income' ? '#00C850' : '#FF6666' }}>
+                    <strong style={{ color: t.type === 'income' ? '#0B8A40' : '#A80000' }}>
                       {t.type === 'income' ? '+' : '-'}{fmtMoney(t.amount)}
                     </strong>
                   </td>

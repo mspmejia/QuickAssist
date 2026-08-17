@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 import './Reports.css';
 
-const COLORS = ['#CC0000','#00C850','#FFB400','#0088FF','#AA44FF','#FF6B35'];
+const COLORS = ['#CC0000','#0B8A40','#B87800','#0088FF','#AA44FF','#FF6B35'];
 
 // ── Tooltip común para gráficas ───────────────────────────
 const ChartTooltip = ({ active, payload, label }) => {
@@ -529,7 +529,7 @@ export default function Reports() {
           {/* Reporte 2: Por empresa */}
           <div className="card generator-card">
             <div className="generator-header">
-              <div className="generator-icon" style={{ background: 'rgba(255,180,0,0.15)', color: '#FFB400' }}>◉</div>
+              <div className="generator-icon" style={{ background: 'rgba(255,180,0,0.15)', color: '#B87800' }}>◉</div>
               <div>
                 <div className="generator-title">Reporte por empresa colaboradora</div>
                 <div className="generator-desc">Todas las atenciones de una empresa en un rango de fechas. Para entregar a la empresa sobre sus colaboradores atendidos.</div>
@@ -592,7 +592,7 @@ export default function Reports() {
           {/* Reporte 4: Mensual */}
           <div className="card generator-card">
             <div className="generator-header">
-              <div className="generator-icon" style={{ background: 'rgba(0,200,80,0.15)', color: '#00C850' }}>◐</div>
+              <div className="generator-icon" style={{ background: 'rgba(0,200,80,0.15)', color: '#0B8A40' }}>◐</div>
               <div>
                 <div className="generator-title">Reporte mensual de operaciones</div>
                 <div className="generator-desc">Resumen ejecutivo del mes: eventos, atenciones, motivos frecuentes, empresas y alertas de inventario.</div>
@@ -669,7 +669,7 @@ export default function Reports() {
                 <XAxis dataKey="name" tick={{ fill:'var(--white-muted)', fontSize:10 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill:'var(--white-muted)', fontSize:10 }} axisLine={false} tickLine={false} />
                 <Tooltip content={<ChartTooltip />} />
-                <Bar dataKey="value" fill="#FFB400" radius={[4,4,0,0]} name="Atenciones" />
+                <Bar dataKey="value" fill="#B87800" radius={[4,4,0,0]} name="Atenciones" />
               </BarChart>
             </ResponsiveContainer>
           </div>

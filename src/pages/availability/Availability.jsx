@@ -7,7 +7,7 @@ const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 const SHIFTS = [
-  { id: 'morning',   label: 'Mañana',  hours: '06:00 – 14:00', color: '#FFB400' },
+  { id: 'morning',   label: 'Mañana',  hours: '06:00 – 14:00', color: '#B87800' },
   { id: 'afternoon', label: 'Tarde',   hours: '14:00 – 22:00', color: '#0088FF' },
   { id: 'night',     label: 'Noche',   hours: '22:00 – 06:00', color: '#AA44FF' },
 ];
@@ -417,7 +417,7 @@ export default function Availability() {
                         {availData[selectedDay?.key]?.[s.id] && (
                           <span className="suggest-avail-tag" style={{ fontSize: 9 }}>Ya marcado</span>
                         )}
-                        {editingUserId === s.id && <span style={{ color: '#00C850', fontSize: 14 }}>✓</span>}
+                        {editingUserId === s.id && <span style={{ color: '#0B8A40', fontSize: 14 }}>✓</span>}
                       </div>
                     </div>
                   ))}

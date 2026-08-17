@@ -447,7 +447,7 @@ export default function Patients() {
               {viewPatient.transport && (
                 <>
                   <div className="divider" />
-                  <div className="ficha-section-title" style={{color:'#FFB400'}}>🚑 Traslado en Ambulancia</div>
+                  <div className="ficha-section-title" style={{color:'#B87800'}}>🚑 Traslado en Ambulancia</div>
                   <div className="ficha-view-grid">
                     <div className="ficha-field"><span>Unidad</span><strong>{viewPatient.transportUnit}</strong></div>
                     <div className="ficha-field"><span>Hospital</span><strong>{viewPatient.hospital}</strong></div>

@@ -52,9 +52,9 @@ export default function Inventory() {
 
   const stats = [
     { label: 'Total artículos', value: inventory.length, color: 'var(--white)' },
-    { label: 'Stock crítico', value: withStatus.filter(i => i.status === 'critical').length, color: '#FF4444' },
-    { label: 'Stock bajo', value: withStatus.filter(i => i.status === 'low').length, color: '#FFB400' },
-    { label: 'Stock OK', value: withStatus.filter(i => i.status === 'ok').length, color: '#00C850' },
+    { label: 'Stock crítico', value: withStatus.filter(i => i.status === 'critical').length, color: '#A80000' },
+    { label: 'Stock bajo', value: withStatus.filter(i => i.status === 'low').length, color: '#B87800' },
+    { label: 'Stock OK', value: withStatus.filter(i => i.status === 'ok').length, color: '#0B8A40' },
   ];
 
   return (
@@ -239,12 +239,12 @@ export default function Inventory() {
                 <label className="form-label">Cantidad a ajustar</label>
                 <input className="form-input" type="number" min="1" value={adjustQty} onChange={e => setAdjustQty(e.target.value)} placeholder="Ingresa cantidad" />
                 {adjustQty && Number(adjustQty) > adjustItem.quantity && (
-                  <span style={{fontSize:11,color:'#FFB400'}}>⚠ Supera el stock disponible ({adjustItem.quantity} {adjustItem.unit}). Se ajustará a 0.</span>
+                  <span style={{fontSize:11,color:'#B87800'}}>⚠ Supera el stock disponible ({adjustItem.quantity} {adjustItem.unit}). Se ajustará a 0.</span>
                 )}
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-outline" onClick={() => handleAdjust('-')} style={{borderColor:'#FF4444',color:'#FF4444'}}>
+              <button className="btn btn-outline" onClick={() => handleAdjust('-')} style={{borderColor:'#A80000',color:'#A80000'}}>
                 − Salida
               </button>
               <button className="btn btn-primary" onClick={() => handleAdjust('+')}>
