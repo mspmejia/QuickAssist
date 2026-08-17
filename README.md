@@ -24,12 +24,18 @@ Sistema de Gestión Paramédica para cobertura de eventos de gran afluencia.
 
 ## Credenciales de prueba
 
+Cada persona del módulo **Personal** tiene su propio acceso (correo registrado en su ficha + contraseña demo `1234`), para que cada quien marque su propia disponibilidad desde su perfil. Además:
+
 ```
-admin@quickassist.com / 1234
-contabilidad@quickassist.com / 1234
-paramedic@quickassist.com / 1234
-piloto@quickassist.com / 1234
+admin@quickassist.com        / 1234   (Administrador)
+contabilidad@quickassist.com / 1234   (Contabilidad)
+alopez@qa.com                / 1234   (Paramédico — Dr. Andrés López)
+lpena@qa.com                 / 1234   (Piloto — Luis Peña)
 ```
+
+Ver el correo de cualquier otra persona en el módulo Personal — todos usan la contraseña `1234`.
+
+> Nota: el personal que se agrega desde la interfaz (botón "+ Agregar Personal") no recibe login automático todavía, porque las credenciales viven en el código (no hay backend). Para darle acceso a alguien nuevo, hay que agregarlo también a `MOCK_PERSONNEL` en `src/context/AppContext.jsx`.
 
 ## Instalación
 

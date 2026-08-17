@@ -38,26 +38,26 @@ export const MOCK_EVENTS = [
 
 // ── 20 PERSONAL ───────────────────────────────────────────
 export const MOCK_PERSONNEL = [
-  { id: 1,  name: 'Dr. Andrés López',         role: 'paramedic', license: 'PAR-001', phone: '55-1001-0001', email: 'alopez@qa.com',       status: 'available', certifications: ['ACLS','BLS','PHTLS'],               eventsCount: 47, avatar: 'AL' },
-  { id: 2,  name: 'Enf. María Gutiérrez',     role: 'paramedic', license: 'PAR-002', phone: '55-1001-0002', email: 'mgutierrez@qa.com',   status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 32, avatar: 'MG' },
-  { id: 3,  name: 'Tec. Roberto Sánchez',     role: 'paramedic', license: 'PAR-003', phone: '55-1001-0003', email: 'rsanchez@qa.com',     status: 'assigned',  certifications: ['BLS','EMT','RCP Avanzado'],         eventsCount: 58, avatar: 'RS' },
-  { id: 4,  name: 'Luis Peña',                role: 'pilot',     license: 'PIL-001', phone: '55-1001-0004', email: 'lpena@qa.com',        status: 'available', certifications: ['Ambulancias','Conducción Especial'], eventsCount: 74, avatar: 'LP' },
-  { id: 5,  name: 'Jorge Vásquez',            role: 'pilot',     license: 'PIL-002', phone: '55-1001-0005', email: 'jvasquez@qa.com',     status: 'inactive',  certifications: ['Ambulancias'],                      eventsCount: 21, avatar: 'JV' },
-  { id: 6,  name: 'Dra. Claudia Herrera',     role: 'paramedic', license: 'PAR-004', phone: '55-1001-0006', email: 'cherrera@qa.com',     status: 'available', certifications: ['ACLS','BLS','PHTLS','ATLS'],        eventsCount: 39, avatar: 'CH' },
-  { id: 7,  name: 'Tec. Felipe Morales',      role: 'paramedic', license: 'PAR-005', phone: '55-1001-0007', email: 'fmorales@qa.com',     status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 15, avatar: 'FM' },
-  { id: 8,  name: 'Enf. Patricia Ríos',       role: 'paramedic', license: 'PAR-006', phone: '55-1001-0008', email: 'prios@qa.com',        status: 'assigned',  certifications: ['BLS','PHTLS'],                      eventsCount: 28, avatar: 'PR' },
-  { id: 9,  name: 'Dr. Samuel Ortiz',         role: 'paramedic', license: 'PAR-007', phone: '55-1001-0009', email: 'sortiz@qa.com',       status: 'available', certifications: ['ACLS','BLS','RCP Avanzado'],        eventsCount: 33, avatar: 'SO' },
-  { id: 10, name: 'Tec. Karen Salinas',       role: 'paramedic', license: 'PAR-008', phone: '55-1001-0010', email: 'ksalinas@qa.com',     status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 11, avatar: 'KS' },
-  { id: 11, name: 'Marco Reyes',              role: 'pilot',     license: 'PIL-003', phone: '55-1001-0011', email: 'mreyes@qa.com',       status: 'available', certifications: ['Ambulancias','Conducción Especial'], eventsCount: 55, avatar: 'MR' },
-  { id: 12, name: 'Óscar Mendoza',            role: 'pilot',     license: 'PIL-004', phone: '55-1001-0012', email: 'omendoza@qa.com',     status: 'available', certifications: ['Ambulancias'],                      eventsCount: 43, avatar: 'OM' },
-  { id: 13, name: 'Enf. Lucía Vargas',        role: 'paramedic', license: 'PAR-009', phone: '55-1001-0013', email: 'lvargas@qa.com',      status: 'available', certifications: ['BLS','EMT','Trauma'],               eventsCount: 22, avatar: 'LV' },
-  { id: 14, name: 'Dr. Héctor Fuentes',       role: 'paramedic', license: 'PAR-010', phone: '55-1001-0014', email: 'hfuentes@qa.com',     status: 'assigned',  certifications: ['ACLS','BLS','PHTLS'],               eventsCount: 61, avatar: 'HF' },
-  { id: 15, name: 'Tec. Daniela Castro',      role: 'paramedic', license: 'PAR-011', phone: '55-1001-0015', email: 'dcastro@qa.com',      status: 'available', certifications: ['BLS','RCP Básico'],                 eventsCount: 8,  avatar: 'DC' },
-  { id: 16, name: 'Ramón Espinoza',           role: 'pilot',     license: 'PIL-005', phone: '55-1001-0016', email: 'respinoza@qa.com',    status: 'available', certifications: ['Ambulancias','Manejo Defensivo'],   eventsCount: 37, avatar: 'RE' },
-  { id: 17, name: 'Enf. Adriana Leal',        role: 'paramedic', license: 'PAR-012', phone: '55-1001-0017', email: 'aleal@qa.com',        status: 'available', certifications: ['BLS','EMT','Pediatría'],            eventsCount: 19, avatar: 'AL2'},
-  { id: 18, name: 'Dr. Iván Contreras',       role: 'paramedic', license: 'PAR-013', phone: '55-1001-0018', email: 'icontreras@qa.com',   status: 'inactive',  certifications: ['ACLS','BLS'],                       eventsCount: 44, avatar: 'IC' },
-  { id: 19, name: 'Gerardo Núñez',            role: 'pilot',     license: 'PIL-006', phone: '55-1001-0019', email: 'gnunez@qa.com',       status: 'assigned',  certifications: ['Ambulancias','Conducción Especial'], eventsCount: 29, avatar: 'GN' },
-  { id: 20, name: 'Tec. Sofía Delgado',       role: 'paramedic', license: 'PAR-014', phone: '55-1001-0020', email: 'sdelgado@qa.com',     status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 6,  avatar: 'SD' },
+  { id: 1,  name: 'Dr. Andrés López',         role: 'paramedic', license: 'PAR-001', phone: '55-1001-0001', email: 'alopez@qa.com',       password: '1234', status: 'available', certifications: ['ACLS','BLS','PHTLS'],               eventsCount: 47, avatar: 'AL' },
+  { id: 2,  name: 'Enf. María Gutiérrez',     role: 'paramedic', license: 'PAR-002', phone: '55-1001-0002', email: 'mgutierrez@qa.com',   password: '1234', status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 32, avatar: 'MG' },
+  { id: 3,  name: 'Tec. Roberto Sánchez',     role: 'paramedic', license: 'PAR-003', phone: '55-1001-0003', email: 'rsanchez@qa.com',     password: '1234', status: 'assigned',  certifications: ['BLS','EMT','RCP Avanzado'],         eventsCount: 58, avatar: 'RS' },
+  { id: 4,  name: 'Luis Peña',                role: 'pilot',     license: 'PIL-001', phone: '55-1001-0004', email: 'lpena@qa.com',        password: '1234', status: 'available', certifications: ['Ambulancias','Conducción Especial'], eventsCount: 74, avatar: 'LP' },
+  { id: 5,  name: 'Jorge Vásquez',            role: 'pilot',     license: 'PIL-002', phone: '55-1001-0005', email: 'jvasquez@qa.com',     password: '1234', status: 'inactive',  certifications: ['Ambulancias'],                      eventsCount: 21, avatar: 'JV' },
+  { id: 6,  name: 'Dra. Claudia Herrera',     role: 'paramedic', license: 'PAR-004', phone: '55-1001-0006', email: 'cherrera@qa.com',     password: '1234', status: 'available', certifications: ['ACLS','BLS','PHTLS','ATLS'],        eventsCount: 39, avatar: 'CH' },
+  { id: 7,  name: 'Tec. Felipe Morales',      role: 'paramedic', license: 'PAR-005', phone: '55-1001-0007', email: 'fmorales@qa.com',     password: '1234', status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 15, avatar: 'FM' },
+  { id: 8,  name: 'Enf. Patricia Ríos',       role: 'paramedic', license: 'PAR-006', phone: '55-1001-0008', email: 'prios@qa.com',        password: '1234', status: 'assigned',  certifications: ['BLS','PHTLS'],                      eventsCount: 28, avatar: 'PR' },
+  { id: 9,  name: 'Dr. Samuel Ortiz',         role: 'paramedic', license: 'PAR-007', phone: '55-1001-0009', email: 'sortiz@qa.com',       password: '1234', status: 'available', certifications: ['ACLS','BLS','RCP Avanzado'],        eventsCount: 33, avatar: 'SO' },
+  { id: 10, name: 'Tec. Karen Salinas',       role: 'paramedic', license: 'PAR-008', phone: '55-1001-0010', email: 'ksalinas@qa.com',     password: '1234', status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 11, avatar: 'KS' },
+  { id: 11, name: 'Marco Reyes',              role: 'pilot',     license: 'PIL-003', phone: '55-1001-0011', email: 'mreyes@qa.com',       password: '1234', status: 'available', certifications: ['Ambulancias','Conducción Especial'], eventsCount: 55, avatar: 'MR' },
+  { id: 12, name: 'Óscar Mendoza',            role: 'pilot',     license: 'PIL-004', phone: '55-1001-0012', email: 'omendoza@qa.com',     password: '1234', status: 'available', certifications: ['Ambulancias'],                      eventsCount: 43, avatar: 'OM' },
+  { id: 13, name: 'Enf. Lucía Vargas',        role: 'paramedic', license: 'PAR-009', phone: '55-1001-0013', email: 'lvargas@qa.com',      password: '1234', status: 'available', certifications: ['BLS','EMT','Trauma'],               eventsCount: 22, avatar: 'LV' },
+  { id: 14, name: 'Dr. Héctor Fuentes',       role: 'paramedic', license: 'PAR-010', phone: '55-1001-0014', email: 'hfuentes@qa.com',     password: '1234', status: 'assigned',  certifications: ['ACLS','BLS','PHTLS'],               eventsCount: 61, avatar: 'HF' },
+  { id: 15, name: 'Tec. Daniela Castro',      role: 'paramedic', license: 'PAR-011', phone: '55-1001-0015', email: 'dcastro@qa.com',      password: '1234', status: 'available', certifications: ['BLS','RCP Básico'],                 eventsCount: 8,  avatar: 'DC' },
+  { id: 16, name: 'Ramón Espinoza',           role: 'pilot',     license: 'PIL-005', phone: '55-1001-0016', email: 'respinoza@qa.com',    password: '1234', status: 'available', certifications: ['Ambulancias','Manejo Defensivo'],   eventsCount: 37, avatar: 'RE' },
+  { id: 17, name: 'Enf. Adriana Leal',        role: 'paramedic', license: 'PAR-012', phone: '55-1001-0017', email: 'aleal@qa.com',        password: '1234', status: 'available', certifications: ['BLS','EMT','Pediatría'],            eventsCount: 19, avatar: 'AL2'},
+  { id: 18, name: 'Dr. Iván Contreras',       role: 'paramedic', license: 'PAR-013', phone: '55-1001-0018', email: 'icontreras@qa.com',   password: '1234', status: 'inactive',  certifications: ['ACLS','BLS'],                       eventsCount: 44, avatar: 'IC' },
+  { id: 19, name: 'Gerardo Núñez',            role: 'pilot',     license: 'PIL-006', phone: '55-1001-0019', email: 'gnunez@qa.com',       password: '1234', status: 'assigned',  certifications: ['Ambulancias','Conducción Especial'], eventsCount: 29, avatar: 'GN' },
+  { id: 20, name: 'Tec. Sofía Delgado',       role: 'paramedic', license: 'PAR-014', phone: '55-1001-0020', email: 'sdelgado@qa.com',     password: '1234', status: 'available', certifications: ['BLS','EMT'],                        eventsCount: 6,  avatar: 'SD' },
 ];
 
 // ── EMPRESAS COLABORADORAS ────────────────────────────────
@@ -215,9 +215,17 @@ export const MOCK_AVAIL_DATA = {
   [mkDate(30)]: { 2: { type: 'full' }, 8: { type: 'full' }, 11: { type: 'full' }, 12: { type: 'full' } },
 };
 
+// Normaliza los eventos semilla para que todos tengan los campos nuevos de
+// auto-asignación (pendingPersonnel) y check-in/check-out (checkins).
+const NORMALIZED_EVENTS = MOCK_EVENTS.map(ev => ({
+  pendingPersonnel: [],
+  checkins: {},
+  ...ev,
+}));
+
 // ── PROVIDER ──────────────────────────────────────────────
 export function AppProvider({ children }) {
-  const [events,         setEvents]         = useState(MOCK_EVENTS);
+  const [events,         setEvents]         = useState(NORMALIZED_EVENTS);
   const [personnel,      setPersonnel]       = useState(MOCK_PERSONNEL);
   const [patients,       setPatients]        = useState(MOCK_PATIENTS);
   const [inventory,      setInventory]       = useState(MOCK_INVENTORY);
@@ -229,8 +237,43 @@ export function AppProvider({ children }) {
   const [movimientos,    setMovimientos]     = useState(MOCK_MOVIMIENTOS);
 
   // ── Eventos ──────────────────────────────────────────
-  const addEvent    = (ev) => setEvents(p => [...p, { ...ev, id: Date.now() }]);
+  const addEvent    = (ev) => setEvents(p => [...p, { pendingPersonnel: [], checkins: {}, ...ev, id: Date.now() }]);
   const updateEvent = (id, data) => setEvents(p => p.map(e => e.id === id ? { ...e, ...data } : e));
+
+  // El usuario se anota a un evento: queda pendiente de aprobación del admin
+  const requestAssignment = (eventId, personId) => setEvents(p => p.map(e => {
+    if (e.id !== eventId) return e;
+    if (e.assignedPersonnel?.includes(personId) || e.pendingPersonnel?.includes(personId)) return e;
+    return { ...e, pendingPersonnel: [...(e.pendingPersonnel || []), personId] };
+  }));
+
+  // El usuario cancela su propia solicitud antes de que el admin la revise
+  const cancelAssignmentRequest = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, pendingPersonnel: (e.pendingPersonnel || []).filter(id => id !== personId) } : e
+  ));
+
+  // Admin aprueba: pasa de pendiente a asignado (confirmado)
+  const approveAssignment = (eventId, personId) => setEvents(p => p.map(e => {
+    if (e.id !== eventId) return e;
+    return {
+      ...e,
+      pendingPersonnel: (e.pendingPersonnel || []).filter(id => id !== personId),
+      assignedPersonnel: e.assignedPersonnel?.includes(personId) ? e.assignedPersonnel : [...(e.assignedPersonnel || []), personId],
+    };
+  }));
+
+  // Admin rechaza la solicitud de auto-asignación
+  const rejectAssignment = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, pendingPersonnel: (e.pendingPersonnel || []).filter(id => id !== personId) } : e
+  ));
+
+  // Check-in / check-out del personal asignado el día del evento
+  const checkInEvent = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, checkins: { ...e.checkins, [personId]: { ...(e.checkins?.[personId]), start: new Date().toISOString() } } } : e
+  ));
+  const checkOutEvent = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, checkins: { ...e.checkins, [personId]: { ...(e.checkins?.[personId]), end: new Date().toISOString() } } } : e
+  ));
 
   // ── Pacientes ─────────────────────────────────────────
   const addPatient = (patient) => {
@@ -315,6 +358,8 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       // Datos existentes
       events, setEvents, addEvent, updateEvent,
+      requestAssignment, cancelAssignmentRequest, approveAssignment, rejectAssignment,
+      checkInEvent, checkOutEvent,
       personnel, setPersonnel,
       patients, setPatients, addPatient,
       inventory, setInventory, updateInventory, addInventoryItem,

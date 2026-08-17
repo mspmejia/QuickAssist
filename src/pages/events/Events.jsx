@@ -43,8 +43,8 @@ function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAs
     if (setupKey    && isAvailableOn(availData, staffMember.id, setupKey))    availDates.push({ key: setupKey,    label: 'Montaje' });
     if (teardownKey && isAvailableOn(availData, staffMember.id, teardownKey)) availDates.push({ key: teardownKey, label: 'Desmontaje' });
 
-    // Buscar en personnel para obtener status
-    const personnelRecord = personnel.find(p => p.name === staffMember.name);
+    // Buscar en personnel para obtener status (mismo ID: personal y accesos son el mismo roster)
+    const personnelRecord = personnel.find(p => p.id === staffMember.id);
     const isAssigned = assignedPersonnel?.includes(personnelRecord?.id);
 
     return { staffMember, personnelRecord, availDates, isAssigned };
@@ -152,9 +152,93 @@ function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAs
   );
 }
 
+// ── Panel de solicitudes de auto-asignación pendientes de aprobación ─────
+function PendingRequests({ event, personnel, onApprove, onReject }) {
+  const pending = event.pendingPersonnel || [];
+  if (pending.length === 0) return null;
+  return (
+    <div className="card" style={{ borderLeft: '3px solid #B87800', marginBottom: 16 }}>
+      <div className="avail-panel-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        🔔 Solicitudes pendientes de aprobación
+        <span className="badge badge-yellow" style={{ fontSize: 10 }}>{pending.length}</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10 }}>
+        {pending.map(pid => {
+          const p = personnel.find(x => x.id === pid);
+          if (!p) return null;
+          return (
+            <div key={pid} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', background: 'var(--black-soft)', borderRadius: 'var(--radius)' }}>
+              <div className="suggest-avatar" style={{ background: ROLE_COLORS[p.role] }}>{p.avatar}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{p.name}</div>
+                <div style={{ fontSize: 11, color: 'var(--white-faint)' }}>{ROLE_LABELS[p.role]} · se anotó por su cuenta</div>
+              </div>
+              <button className="btn btn-outline btn-sm" style={{ color: 'var(--red)', borderColor: 'var(--red)' }} onClick={() => onReject(pid)}>✕ Rechazar</button>
+              <button className="btn btn-primary btn-sm" onClick={() => onApprove(pid)}>✓ Aprobar</button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Estado del evento para el usuario (auto-asignación + check-in/out) ────
+function MyEventStatus({ event, myId, onRequest, onCancelRequest, onCheckIn, onCheckOut }) {
+  if (!myId) return null;
+  const isAssigned = event.assignedPersonnel?.includes(myId);
+  const isPending  = event.pendingPersonnel?.includes(myId);
+  const checkin    = event.checkins?.[myId] || {};
+
+  const fmtTime = (iso) => iso ? format(new Date(iso), 'HH:mm') : '';
+
+  if (isAssigned) {
+    if (checkin.start && checkin.end) {
+      return (
+        <div className="my-event-status">
+          <span className="badge badge-gray">✓ Finalizaste este evento a las {fmtTime(checkin.end)}</span>
+        </div>
+      );
+    }
+    if (checkin.start) {
+      return (
+        <div className="my-event-status" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span className="badge badge-green">● En curso desde las {fmtTime(checkin.start)}</span>
+          <button className="btn btn-primary btn-sm" onClick={onCheckOut}>■ Finalizar evento</button>
+        </div>
+      );
+    }
+    return (
+      <div className="my-event-status" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span className="badge badge-green">✓ Estás asignado a este evento</span>
+        <button className="btn btn-primary btn-sm" onClick={onCheckIn}>▶ Iniciar evento</button>
+      </div>
+    );
+  }
+
+  if (isPending) {
+    return (
+      <div className="my-event-status" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span className="badge badge-yellow">◷ Solicitud enviada · pendiente de aprobación</span>
+        <button className="btn btn-ghost btn-sm" onClick={onCancelRequest}>Cancelar solicitud</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="my-event-status">
+      <button className="btn btn-outline btn-sm" onClick={onRequest}>+ Anotarme a este evento</button>
+    </div>
+  );
+}
+
 // ── Componente principal ──────────────────────────────────
 export default function Events() {
-  const { events, addEvent, updateEvent, personnel, availData } = useApp();
+  const {
+    events, addEvent, updateEvent, personnel, availData,
+    requestAssignment, cancelAssignmentRequest, approveAssignment, rejectAssignment,
+    checkInEvent, checkOutEvent,
+  } = useApp();
   const { user, hasRole } = useAuth();
   const [view, setView] = useState('list');
   const [showModal, setShowModal] = useState(false);
@@ -291,7 +375,11 @@ export default function Events() {
                   {canEdit && (
                     <div className="event-actions">
                       <button className="btn btn-ghost btn-sm" onClick={() => openEdit(ev)}>✎ Editar</button>
-                      <button className="btn btn-ghost btn-sm" onClick={() => openAssign(ev)}>◉ Personal</button>
+                      <button className="btn btn-ghost btn-sm" onClick={() => openAssign(ev)}>
+                        ◉ Personal{ev.pendingPersonnel?.length > 0 && (
+                          <span className="badge badge-yellow" style={{ marginLeft: 6, fontSize: 10 }}>{ev.pendingPersonnel.length} pendiente{ev.pendingPersonnel.length !== 1 ? 's' : ''}</span>
+                        )}
+                      </button>
                     </div>
                   )}
                 </div>
@@ -303,6 +391,16 @@ export default function Events() {
                 <div className="event-detail"><span>📅</span>Montaje: {ev.setupDate ? format(new Date(ev.setupDate), 'd MMM', { locale: es }) : 'N/D'}</div>
                 <div className="event-detail"><span>📅</span>Desmontaje: {ev.teardownDate ? format(new Date(ev.teardownDate), 'd MMM', { locale: es }) : 'N/D'}</div>              </div>
               {ev.notes && <div className="event-notes">📝 {ev.notes}</div>}
+              {!canEdit && (ev.status === 'confirmed' || ev.status === 'pending') && (
+                <MyEventStatus
+                  event={ev}
+                  myId={user?.id}
+                  onRequest={() => requestAssignment(ev.id, user.id)}
+                  onCancelRequest={() => cancelAssignmentRequest(ev.id, user.id)}
+                  onCheckIn={() => checkInEvent(ev.id, user.id)}
+                  onCheckOut={() => checkOutEvent(ev.id, user.id)}
+                />
+              )}
             </div>
           ))}
           {sorted.length === 0 && (
@@ -406,6 +504,12 @@ export default function Events() {
               <button className="btn-ghost" onClick={() => setShowAssignModal(false)}>✕</button>
             </div>
             <div className="modal-body">
+              <PendingRequests
+                event={selectedEvent}
+                personnel={personnel}
+                onApprove={(pid) => { approveAssignment(selectedEvent.id, pid); setSelectedEvent(prev => prev && { ...prev, pendingPersonnel: (prev.pendingPersonnel || []).filter(id => id !== pid), assignedPersonnel: prev.assignedPersonnel?.includes(pid) ? prev.assignedPersonnel : [...(prev.assignedPersonnel || []), pid] }); }}
+                onReject={(pid) => { rejectAssignment(selectedEvent.id, pid); setSelectedEvent(prev => prev && { ...prev, pendingPersonnel: (prev.pendingPersonnel || []).filter(id => id !== pid) }); }}
+              />
               {/* Tabs: Sugerencias / Todo el personal */}
               <div className="enroll-tabs" style={{ marginBottom: 16 }}>
                 <button

@@ -87,7 +87,8 @@ export default function Login() {
           <div className="login-hints">
             <p>Accesos de prueba:</p>
             <div className="login-hint-row"><span>admin@quickassist.com</span><span>/ 1234</span></div>
-            <div className="login-hint-row"><span>paramedic@quickassist.com</span><span>/ 1234</span></div>
+            <div className="login-hint-row"><span>alopez@qa.com</span><span>/ 1234</span></div>
+            <div className="login-hint-row" style={{ opacity: 0.7 }}><span>Todo el personal usa</span><span>/ 1234</span></div>
           </div>
         )}
       </div>
