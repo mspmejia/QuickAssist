@@ -215,9 +215,17 @@ export const MOCK_AVAIL_DATA = {
   [mkDate(30)]: { 2: { type: 'full' }, 8: { type: 'full' }, 11: { type: 'full' }, 12: { type: 'full' } },
 };
 
+// Normaliza los eventos semilla para que todos tengan los campos nuevos de
+// auto-asignación (pendingPersonnel) y check-in/check-out (checkins).
+const NORMALIZED_EVENTS = MOCK_EVENTS.map(ev => ({
+  pendingPersonnel: [],
+  checkins: {},
+  ...ev,
+}));
+
 // ── PROVIDER ──────────────────────────────────────────────
 export function AppProvider({ children }) {
-  const [events,         setEvents]         = useState(MOCK_EVENTS);
+  const [events,         setEvents]         = useState(NORMALIZED_EVENTS);
   const [personnel,      setPersonnel]       = useState(MOCK_PERSONNEL);
   const [patients,       setPatients]        = useState(MOCK_PATIENTS);
   const [inventory,      setInventory]       = useState(MOCK_INVENTORY);
@@ -229,8 +237,43 @@ export function AppProvider({ children }) {
   const [movimientos,    setMovimientos]     = useState(MOCK_MOVIMIENTOS);
 
   // ── Eventos ──────────────────────────────────────────
-  const addEvent    = (ev) => setEvents(p => [...p, { ...ev, id: Date.now() }]);
+  const addEvent    = (ev) => setEvents(p => [...p, { pendingPersonnel: [], checkins: {}, ...ev, id: Date.now() }]);
   const updateEvent = (id, data) => setEvents(p => p.map(e => e.id === id ? { ...e, ...data } : e));
+
+  // El usuario se anota a un evento: queda pendiente de aprobación del admin
+  const requestAssignment = (eventId, personId) => setEvents(p => p.map(e => {
+    if (e.id !== eventId) return e;
+    if (e.assignedPersonnel?.includes(personId) || e.pendingPersonnel?.includes(personId)) return e;
+    return { ...e, pendingPersonnel: [...(e.pendingPersonnel || []), personId] };
+  }));
+
+  // El usuario cancela su propia solicitud antes de que el admin la revise
+  const cancelAssignmentRequest = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, pendingPersonnel: (e.pendingPersonnel || []).filter(id => id !== personId) } : e
+  ));
+
+  // Admin aprueba: pasa de pendiente a asignado (confirmado)
+  const approveAssignment = (eventId, personId) => setEvents(p => p.map(e => {
+    if (e.id !== eventId) return e;
+    return {
+      ...e,
+      pendingPersonnel: (e.pendingPersonnel || []).filter(id => id !== personId),
+      assignedPersonnel: e.assignedPersonnel?.includes(personId) ? e.assignedPersonnel : [...(e.assignedPersonnel || []), personId],
+    };
+  }));
+
+  // Admin rechaza la solicitud de auto-asignación
+  const rejectAssignment = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, pendingPersonnel: (e.pendingPersonnel || []).filter(id => id !== personId) } : e
+  ));
+
+  // Check-in / check-out del personal asignado el día del evento
+  const checkInEvent = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, checkins: { ...e.checkins, [personId]: { ...(e.checkins?.[personId]), start: new Date().toISOString() } } } : e
+  ));
+  const checkOutEvent = (eventId, personId) => setEvents(p => p.map(e =>
+    e.id === eventId ? { ...e, checkins: { ...e.checkins, [personId]: { ...(e.checkins?.[personId]), end: new Date().toISOString() } } } : e
+  ));
 
   // ── Pacientes ─────────────────────────────────────────
   const addPatient = (patient) => {
@@ -315,6 +358,8 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       // Datos existentes
       events, setEvents, addEvent, updateEvent,
+      requestAssignment, cancelAssignmentRequest, approveAssignment, rejectAssignment,
+      checkInEvent, checkOutEvent,
       personnel, setPersonnel,
       patients, setPatients, addPatient,
       inventory, setInventory, updateInventory, addInventoryItem,
