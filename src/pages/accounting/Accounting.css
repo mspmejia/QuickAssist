@@ -10,5 +10,5 @@
 }
 .acc-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--white-muted); }
 .acc-stat-value { font-family: var(--font-display); font-size: 24px; font-weight: 800; }
-.acc-stat-value.income { color: #00C850; }
-.acc-stat-value.expense { color: #FF6666; }
+.acc-stat-value.income { color: #0B8A40; }
+.acc-stat-value.expense { color: var(--red-dark); }

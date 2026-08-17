@@ -14,8 +14,8 @@
 .inv-stat-label { font-size: 11px; color: var(--white-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
 .inv-qty { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
-.inv-qty.critical { color: #FF4444; }
-.inv-qty.low { color: #FFB400; }
+.inv-qty.critical { color: var(--red-dark); }
+.inv-qty.low { color: #B87800; }
 
 /* ── Responsivo móvil ────────────────────────────────────── */
 @media (max-width: 768px) {

@@ -102,10 +102,10 @@
 .avail-day:nth-child(7n) { border-right: none; }
 
 .avail-day:hover:not(.avail-day--empty):not(.avail-day--past) {
-  background: rgba(255,255,255,0.04);
+  background: rgba(43,42,40,0.035);
 }
 
-.avail-day--empty { cursor: default; background: rgba(0,0,0,0.2); }
+.avail-day--empty { cursor: default; background: rgba(43,42,40,0.03); }
 
 .avail-day--past { cursor: default; opacity: 0.45; }
 
@@ -286,8 +286,8 @@
   transition: var(--transition);
 }
 
-.avail-filter-item:hover { background: rgba(255,255,255,0.04); }
-.avail-filter-item--active { background: rgba(255,255,255,0.06); border-color: var(--black-border); }
+.avail-filter-item:hover { background: rgba(43,42,40,0.035); }
+.avail-filter-item--active { background: rgba(203,4,24,0.06); border-color: var(--red); }
 
 .avail-filter-check {
   width: 16px;
@@ -303,7 +303,7 @@
 }
 
 /* Selected day highlight */
-.avail-day--selected { background: rgba(204,0,0,0.08); }
+.avail-day--selected { background: rgba(203,4,24,0.08); }
 
 /* ── Modal ──────────────────────────────────────────────── */
 .avail-modal-backdrop {
@@ -381,7 +381,7 @@
 
 .avail-staff-option:hover {
   border-color: var(--white-faint);
-  background: rgba(255,255,255,0.05);
+  background: rgba(43,42,40,0.03);
 }
 
 .avail-staff-option--active {
@@ -454,7 +454,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #00C850;
+    background: #0B8A40;
     margin: 2px auto 0;
   }
 

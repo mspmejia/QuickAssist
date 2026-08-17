@@ -99,9 +99,9 @@ export default function Dashboard() {
   // ── Stat cards ────────────────────────────────────────
   const stats = [
     { label: 'Eventos próximos',    value: upcomingEvents.length,     icon: '◈', color: '#CC0000', action: () => navigate('/events')    },
-    { label: 'Personal disponible', value: availablePersonnel.length, icon: '◉', color: '#00C850', action: () => navigate('/personnel') },
+    { label: 'Personal disponible', value: availablePersonnel.length, icon: '◉', color: '#0B8A40', action: () => navigate('/personnel') },
     { label: statPeriod==='mes' ? 'Atenciones este mes' : 'Total atenciones', value: totalPat, icon: '✚', color: '#0088FF', action: () => navigate('/patients') },
-    { label: 'Alertas de inventario', value: lowStock.length,         icon: '▣', color: '#FFB400', action: () => navigate('/inventory') },
+    { label: 'Alertas de inventario', value: lowStock.length,         icon: '▣', color: '#B87800', action: () => navigate('/inventory') },
   ];
 
   return (
@@ -189,7 +189,7 @@ export default function Dashboard() {
                   </div>
                   <div className="dash-type-divider" />
                   <div className="dash-type-item">
-                    <Donut pct={collaboratorPct} color="#FFB400" />
+                    <Donut pct={collaboratorPct} color="#B87800" />
                     <div>
                       <div className="dash-type-value">{collaborators}</div>
                       <div className="dash-type-label">Colaboradores</div>
@@ -273,7 +273,7 @@ export default function Dashboard() {
                   <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{ fontSize: 11, color: 'var(--white-faint)', width: 16, textAlign: 'right', flexShrink: 0 }}>{i + 1}</div>
                     <div style={{ flex: 1, fontSize: 12, color: 'var(--white)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.name}</div>
-                    <Bar value={c.count} max={maxCompanyCount} color="#FFB400" />
+                    <Bar value={c.count} max={maxCompanyCount} color="#B87800" />
                     <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--white)', width: 20, textAlign: 'right', flexShrink: 0 }}>{c.count}</div>
                   </div>
                 ))}
@@ -293,7 +293,7 @@ export default function Dashboard() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {topConsumed.map((item, i) => {
                   const stockPct = item.stock > 0 ? Math.round((item.stock / (item.stock + item.consumed)) * 100) : 0;
-                  const stockColor = stockPct < 30 ? '#CC0000' : stockPct < 60 ? '#FFB400' : '#00C850';
+                  const stockColor = stockPct < 30 ? '#CC0000' : stockPct < 60 ? '#B87800' : '#0B8A40';
                   return (
                     <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>

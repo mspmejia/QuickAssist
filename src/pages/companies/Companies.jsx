@@ -17,9 +17,9 @@ const RUBRO_COLORS = {
   seguridad:    '#CC0000',
   produccion:   '#0088FF',
   tecnica:      '#AA44FF',
-  catering:     '#FFB400',
+  catering:     '#B87800',
   construccion: '#FF6B35',
-  transporte:   '#00C850',
+  transporte:   '#0B8A40',
   limpieza:     '#00BBCC',
   otro:         '#888888',
 };
@@ -130,7 +130,7 @@ export default function Companies() {
               <button className="btn btn-outline btn-sm" onClick={() => openEdit(c)}>✎ Editar</button>
               <button
                 className="btn btn-ghost btn-sm"
-                style={{ color: c.activo ? 'var(--white-faint)' : '#00C850' }}
+                style={{ color: c.activo ? 'var(--white-faint)' : '#0B8A40' }}
                 onClick={() => toggleActivo(c)}
               >
                 {c.activo ? '✕ Desactivar' : '✓ Activar'}

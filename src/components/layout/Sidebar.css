@@ -1,7 +1,7 @@
 .sidebar {
   width: var(--sidebar-width);
   min-height: 100vh;
-  background: var(--black-soft);
+  background: var(--black-card);
   border-right: 1px solid var(--black-border);
   display: flex;
   flex-direction: column;
@@ -93,13 +93,14 @@
 
 .sidebar-item:hover {
   color: var(--white);
-  background: rgba(255,255,255,0.05);
+  background: var(--black-soft);
 }
 
 .sidebar-item--active {
-  color: var(--white);
-  background: rgba(204,0,0,0.15);
-  border-left: 2px solid var(--red);
+  color: var(--red-dark);
+  background: rgba(203,4,24,0.08);
+  border-left: 3px solid var(--red);
+  font-weight: 600;
 }
 
 .sidebar-icon {

@@ -22,8 +22,8 @@ export const ROLE_LABELS = {
 
 export const ROLE_COLORS = {
   admin:      '#CC0000',
-  accounting: '#FFB400',
-  paramedic:  '#00C850',
+  accounting: '#B87800',
+  paramedic:  '#0B8A40',
   pilot:      '#0088FF',
   inventory:  '#AA44FF',
   medic:      '#FF6B35',
