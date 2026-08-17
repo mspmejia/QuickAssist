@@ -43,8 +43,8 @@ function StaffSuggestions({ event, availData, personnel, assignedPersonnel, onAs
     if (setupKey    && isAvailableOn(availData, staffMember.id, setupKey))    availDates.push({ key: setupKey,    label: 'Montaje' });
     if (teardownKey && isAvailableOn(availData, staffMember.id, teardownKey)) availDates.push({ key: teardownKey, label: 'Desmontaje' });
 
-    // Buscar en personnel para obtener status
-    const personnelRecord = personnel.find(p => p.name === staffMember.name);
+    // Buscar en personnel para obtener status (mismo ID: personal y accesos son el mismo roster)
+    const personnelRecord = personnel.find(p => p.id === staffMember.id);
     const isAssigned = assignedPersonnel?.includes(personnelRecord?.id);
 
     return { staffMember, personnelRecord, availDates, isAssigned };
